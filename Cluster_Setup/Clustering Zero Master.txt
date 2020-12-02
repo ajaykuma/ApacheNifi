@@ -1,0 +1,68 @@
+Zero-Master Clustering
+NiFi employs a Zero-Master Clustering paradigm. Each node in the cluster performs the same tasks on the data, 
+but each operates on a different set of data. One of the nodes is automatically elected (via Apache ZooKeeper) 
+as the Cluster Coordinator. All nodes in the cluster will then send heartbeat/status information to this node, 
+and this node is responsible for disconnecting nodes that do not report any heartbeat status for some amount of time.
+ Additionally, when a new node elects to join the cluster, the new node must first connect to the currently-elected 
+Cluster Coordinator in order to obtain the most up-to-date flow. If the Cluster Coordinator determines that the
+ node is allowed to join (based on its configured Firewall file), the current flow is provided to that node, and 
+that node is able to join the cluster, assuming that the node's copy of the flow matches the copy provided by the 
+Cluster Coordinator. If the node's version of the flow configuration differs from that of the Cluster Coordinator's, 
+the node will not join the cluster.
+
+
+Article
+One of the most highly anticipated features of Apache NiFi 1.0.0 is the introduction of Zero-Master Clustering. 
+Previous versions of NiFi relied upon a single "Master Node" (more formally known as the NiFi Cluster Manager) 
+to show the User Interface. If this node was lost, data continued to flow, but the application was unable to show 
+the topology of the flow, or show any stats. Additionally, Site-to-Site communications continued to send data but 
+could not obtain up-to-date information about cluster topology, which resulted in less efficient load balancing.
+
+Version 1.0.0 of NiFi addresses these issues by switching to a Zero-Master Clustering paradigm. This post will explore
+ the approaches taken to ensure that NiFi provides high availability of the control plane without sacrificing the User
+ Experience. After all, the User Experience is what has allowed NiFi to become the go-to solution for providing
+ dataflow management to small organizations as well as the world's largest enterprises.
+
+The benefit that the master/worker paradigm offered us was a design that was easy to reason over and understand. 
+All web requests were sent directly to the master. This means that coordination of the flow was controlled by the master
+ (e.g., it would prevent one user from modifying a Processor while another user was modifying the 
+Processor at the same time). The entire cluster topology was stored only at the master. The "golden copy" 
+of the flow configuration was held by the master. To the extent possible, we wanted to keep this benefit of
+ being easy to reason about how the system works, while still overcoming all of these hurdles.
+
+I am happy to say that the NiFi community has accomplished this goal, keeping a simple, easy-to-understand design
+ with all of the benefits of High Availability. To do this, we leveraged the power of Apache ZooKeeper in order to 
+provide automatic election of different clustering-related roles. In NiFi 1.0.0, we have two different roles that 
+are automatically elected. The first role is the Primary Node (Yes! Gone are the days of having to manually switch 
+which node is Primary Node). The second role is the Cluster Coordinator.
+
+This new Cluster Coordinator role is responsible for monitoring the nodes in a cluster and marking any nodes that
+ fail to heartbeat as being "Disconnected." Additionally, the Cluster Coordinator provides a mechanism to ensure that
+ the flow is consistent across all nodes. This is accomplished by forwarding all web-based requests to the Coordinator. 
+The Coordinator can then replicate this request to all nodes in the cluster and merge their responses into a single, 
+unified view, in much the same way that the old Cluster Manager did. However, with the shift to the Cluster Coordinator,
+ if the node that is elected Cluster Coordinator drops from the cluster, a new node will automatically pick up these 
+responsibilities. This approach means that users are able to navigate to the URL of any node in a NiFi cluster, so users
+ need not concern themselves with which node is currently elected the Cluster Coordinator. All of the 
+necessary coordination, such as component locking, is handled at a single point, so there is no need to introduce 
+expensive and difficult-to-understand distributed locking mechanisms.
+
+Additionally, these changes provide a great footing to build upon for the upcoming changes that are planned for 
+Data Replication across nodes in a NiFi cluster. A NiFi Feature Proposal outlines this feature at a fairly high
+ level at https://cwiki.apache.org/confluence/display/NIFI/Data+Replication. This notion of an automatically
+ elected, highly available Cluster Coordinator means that we can also develop an easy-to-understand approach 
+for this Data Replication, as well, since we are able to elect a single node to coordinate the failover of the 
+data processing.
+
+Also new to NiFi 1.0.0 is an overhaul of the security model and component-level versioning. We refer to these
+ updates jointly as providing multi-tenancy. NiFi now supports any number of users viewing and modifying the 
+flow at the same time without the need to continually refresh the flow. In addition to this, permissions can
+ now be given to users to read or modify any component, individually. Prior to version 1.0.0, NiFi required that
+ users be given read-only access or write access to the entire flow. However, as NiFi continues to gain more and more
+ adoption, enterprise users have been seeking the ability to restrict access to specific components to different users. 
+This is now possible, with a simple, intuitive user interface to provide and configure access policies. 
+Bryan Bende,
+ an Apache NiFi PMC member has provided an excellent overview of this feature at 
+http://bryanbende.com/development/2016/08/17/apache-nifi-1-0-0-authorization-and-multi-tenancy.
+
+Version 1.0.0 of Apache NiFi has been a long time in the making and is available now. In this post, we've given a very high level overview of how the Zero-Master Clustering feature works. A completely redesigned UI and several minor features and improvements have been added, as well. NiFi can be downloaded at http://nifi.apache.org/download.html with Release Notes available at https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version1.0.0. Please let us know how we can continue to improve the application and what you would love to see added into a future version!

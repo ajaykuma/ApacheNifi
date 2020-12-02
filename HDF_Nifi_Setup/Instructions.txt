@@ -1,0 +1,13 @@
+Apache Nifi Sandbox in HDP setup
+----------------------------
+https://www.cloudera.com/tutorials/hortonworks-sandbox-guide/2.html
+register and download Hortonworks HDF
+https://www.cloudera.com/downloads/hortonworks-sandbox.html
+Choose Installation Type> Virtualbox
+
+in Oracle Vmbox: File> Import Appliance > add the HDF_3.1.1_virtualbox_180626 ova file
+--Start the machine
+--wait for "extractind & loading layer" to complete
+--Access sandbox via http://localhost:1080/
+--Access quicklinks > Advanced HDF
+--Access Dashboard to look at all services within HDF
