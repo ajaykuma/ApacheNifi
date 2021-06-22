@@ -1,16 +1,19 @@
 Apache Nifi Cluster Setup with Embedded Zookeeper
 -----------------------------------------------
-#Setup 3 nodes that can ping each other, SSH (password less) each other, firewall disabled (sudo ufw disable) and able to ping external world.
+#Setup 3 nodes that can ping each other, SSH (password less) each other, firewall disabled 
+(sudo ufw disable) and able to ping external world.
+
 #Steps for all 3 nodes
 #Download apache nifi 1.9.2 from https://nifi.apache.org/download.html
 #[Releases>1.9.2>Binaries>nifi-1.9.2-bin.tar.gz]
-#in my case the downloads are in /home/hdu/Downloads
+
+#in my case the downloads are in /home/nif/Downloads
 cd /usr/local
-sudo tar -xvf /home/hdu/Downloads/nifi-1.9.2-bin.tar.gz
+sudo tar -xvf /home/nif/Downloads/nifi-1.9.2-bin.tar.gz
 sudo ln -s nifi-1.9.2/ nifi
-sudo chown -R hdu:hdu nifi*
+sudo chown -R nif:nif nifi*
 cd
-#In home directory ie /home/hdu update .bashrc
+#In home directory ie /home/nif update .bashrc
 vi .bashrc
 export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_221
 export PATH=$PATH:$JAVA_HOME/bin
@@ -23,9 +26,11 @@ source .bashrc
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node1/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node2/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node3/conf to /usr/local/nifi/
+
 #Now look into "nifi.properties" & "zookeeper.properties"
+
 #Remember to change hostnames in config files as per your own setup
-#for example in each of these above mentioned config files, replace the hostname um1/um2/um3 with your hostname and desired ports.
+#for example in each of these above mentioned config files, replace the hostname n1/n2/n3 with your hostname and desired ports.
 #on each node
 cd /usr/local/nifi
 mkdir state
@@ -53,10 +58,10 @@ cat /usr/local/nifi/logs/nifi-app.log
 #check if cluster is being initiated, heartbeats are being sent etc..
 
 #on Node1 open browser
-http://um1:8080
+http://n1:8080
 #similarly on other nodes
-http://um2:8080
-http://um3:8080
+http://n2:8080
+http://n3:8080
 
 #look if number of nodes shows as 3 in top left corner
 #if yes cluster is setup

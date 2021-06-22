@@ -12,6 +12,7 @@ with the following contents:
 	server.1=localhost:2888:3888
 	server.2=localhost:2889:3889
 	server.3=localhost:2890:3890
+
 Because we are running multiple ZooKeeper servers on a single machine, 
 we specified the servername as localhost with unique quorum & leader election ports (i.e. 2888:3888, 2889:3889, 2890:3890) 
 for each server.X.
@@ -35,6 +36,7 @@ ZooKeeper Startup
 Start up each ZooKeeper host, by navigating to the /bin directory of each and applying the following command:
 
 	./zkServer.sh start
+
 NiFi
 NiFi Configuration
 For a two node NiFi cluster, in each conf directory modify the following properties in the nifi.properties file:
