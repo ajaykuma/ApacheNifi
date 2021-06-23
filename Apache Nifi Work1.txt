@@ -1,0 +1,71 @@
+Apache Nifi: Notes
+-----------
+Understanding configurations
+Name:
+1st & fundamental property of processor is the 'name' property.
+We can give a more meaningful name for this.
+for ex : getFile ---Get file from Source
+Once the flow becomes dense, this property will helps us to understand the significance of each processor.
+Scheduling:
+We can schedule a processor to run in regular interval 
+Ex: 'Scheduling strategy' can be "time driven"
+     Note** we can change this to "cron driven" to use any valid cron expressions.
+    'Run schedule' can be "0 secs" [i.e. processor will run continously without any gap]
+     Note** we can change this value to "5 secs" to have the processor check every "5 secs".
+     Time duration could be in sec/min/hrs/days.
+Concurrent Tasks:
+No of concurrent tasks that should be scheduled using 'concurrent tasks'
+-----------------------------
+Example 1: Using GetFile & PutFile
+------------------------------
+Example 2: Using GenerateFlowFile & LogAttribute
+GenerateFlowFile processor : to create flowfiles with random data/custom data.
+Usually used for conducting any testing/simulation of actual data flow.(or for other processors/components in Nifi)
+LogAttribute : logs the attributes of flow file. This can also be used for valid termination of any flow.
+Steps:
+--to add this processor > click on processor icon and drag and drop on canvas
+--search for GenerateFlowFile and add it.
+--similarly add LogAttribute
+--establish connection between them (check for number of relationships the connection has 
+For ex: 'For relationship' "success"
+--if LogAttribute shows --relationship is invalid-- via an alert sign,
+click on settings for LogAttribute and select 'Automatically Terminate Relationships' "success"
+--Let's also change 'Run schedule' "10 secs" for GenerateFlowFile
+--start the processors
+--what if change the 'Concurrent tasks' for GenerateFlowfile. For ex: 'Concurrent Tasks' "5"
+--Make the changes and start the processor. Check if the 'Queued' changes.
+  'Concurrent Tasks' spawns the configured number of tasks in parallel and process the flowfiles in parallel.
+--Let's also look at properties specifc to each processor and use '?' i.e. tool tip to know more about each property
+-------------------
+Example 3: 
+To clear flowfiles in queue> right click on queue and 'empty queue'
+To see the content and attributes of flowfiles in the queue > 
+--update GenerateFlowFile configuration
+  File size: 1B
+  Unique FlowFiles : True
+  Scheduling > Run Schedule : 0 secs
+--Start the GenerateFlowFile processor
+--Look into queue > right click > 'list queue'
+--Click on information icon for any of the flowfile to look for details
+--click on Attributes to look at attributes of a flow file.
+  Attributes of a flowfile vary based on origin of flowfile and based on previous processor this flowfile has been through.
+  We can also have custom attributes to flowfiles.
+--We notice the queued flowfiles stop at '10000'
+Note** In Nifi each processor takes different time to process a flowfile based on complexity involved.
+For ex: A 'route on attribute' processor will be faster to 'covert record' processor or 'hash content' processor.
+As routing is simpler than converting an entire flowfile content.
+Each connection can have its back pressure defined. Look into settings for the queue >
+Back Pressure 
+'Object threshold' "10000"
+'Size threshold'
+NIFI stops if either of the configuration reaches first. we can check this by changing file size.
+Back pressure avoids data over loads and memory overloads because  backpressure configuration passes through multiple processors
+once threshold is reached.
+---------------------------------------------------------------
+
+
+
+
+
+
+

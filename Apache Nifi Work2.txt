@@ -1,0 +1,62 @@
+Apache Nifi: Notes
+-----------
+Example 4: Manipulating attributes and content of flowfile using available processors in Nifi
+--Add a GenerateFlowFile processor
+--configure it to generate random data every 5 secs of size 1b 
+[File size: 1B, Unqiue FlowFiles : true, Run Schedule: 5 sec]
+--Add a ReplaceText processor (updates the content of a flowfile by evaluating a regular expression against it,
+and replaces the section of content that matches regular expression with some alternate value)
+--establish the connection between these. (Relationships: Success)
+--view and edit configuration of ReplaceText processor.
+'Replacement Strategy' : used to match regular expression and replace matched value with alternate value
+                         can match any string literal and replace it another value
+                         can completely replace the content of flowfile with the replacement value without matching it with 
+			 regular expression or a string literal
+                         can be used to prepend or append ur text to content of flowfile.
+note** if a value of property selected, it may make other property obsolete.
+For example: selecting 'replacement strategy': "Always replace" makes 'Search Value':"irrelevant"
+Similarly append/prepend property will change the way the value is appended(to entire flowfile or to each line in flowfile) based on
+evaluation mode property.
+'Maximum buffer size' : defines the max size of flowfile to be buffered before processing it.If limit 
+exists, flowfile goes to failure relationship path.
+'Character Set': shows the character set used for encoding.
+'Search value': Takes a regular expression/string literal which will be used to compare the flowfile content & replace it
+with the value available in 'replacement value' property.
+
+#to replace content in flowfiles with csv say a,b,c,d
+'Replacement Strategy': 'Always Replace'
+'Replacement Value': a,b,c,d
+
+#to logically end the flow, we will add LogAttribute processor
+--add LogAttribute processor
+--create connection from ReplaceText to LogAttribute with 'For Relationships':'success' & 'failure'
+<right click on canvas and refresh>
+Now
+--start GenerateFlowFile > check if flowfiles are generated and queued up> list queue> view contents of a flowfile
+--stop GenerateFlowFile
+--start ReplaceText > check the content of flowfiles now and see if content was replaced with 'a,b,c,d'
+(here the size of content changes as ReplaceText replaces the content as per replacement value)
+
+Now add one more processor i.e. ExtractText Processor (used to extract contents from flowfiles into 1/more flowfile attributes)
+To do so, we can add a new property to processor and assign a regular expression to it.
+--Add ExtractText
+Configure it==
+	--add a new property : properties > + csv
+	--assign its value to [(.+),(.+),(.+),(.+)] (this will extract,split and assign the values of flowfile content into 
+                                a flowfile attribute 'csv']
+--connect ReplaceText with ExtractText
+--create new connection between ExtractText to LogAttribute with For Relationships: Matched
+--also configure ExtractText to autoterminate for 'unmatched'
+--start ExtractText (here the size of content doesnt change as ExtractContent only extract content to attributes without
+                     altering the actual content)
+Now let's look at list of attributes
+right click on connection between ExtractText and LogAttribute> list queue > queue content > attributes 
+viewing content of flowfiles confirms that there was no alteration done.
+
+
+
+
+
+                    
+
+

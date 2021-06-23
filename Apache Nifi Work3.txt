@@ -1,0 +1,71 @@
+Apache Nifi: Notes
+-----------
+Example 5:
+Using Expression Language:
+#Using flow created in Example 4
+--To replace the content of flowfile but instead of replacing with CSV value ,let's create a JSON string as shown
+   "field1":"a"
+   "field1":"b"
+   "field1":"c"
+   "field1":"d"
+	here the fields are assigned with the values (we extracted to the attributes prefixed with CSV)
+Processors to use:
+GenerateFlowFile
+ReplaceText
+ExtractText
+LogAttribute
+
+--Copy ReplaceText processor from previous flow and edit configuration
+--edit replacement value to JSON string as expected
+   {"field1":"a"
+   "field1":"b"
+   "field1":"c"
+   "field1":"d"}
+--but instead of hardcoding values for fields, we would want to read them from previously extracted attributes.
+--ie accessing value of a flowfile and assign to a processor (using expression language ie ${attribute_name)
+   {"field1":"${csv.1}"
+   "field1":"${csv.2}"
+   "field1":"${csv.3}"
+   "field1":"${csv.4}"}
+Now add this processor to existing flow
+
+GenerateFlowFile>ReplaceText>ExtractText>ReplaceText(new one)> LogAttribute
+Start and test the ReplaceText (new one) and look at flowfiles created from queue.
+
+For more details:
+https://nifi.apache.org/docs/nifi-docs/html/expression-language-guide.html
+
+===========================
+Example 6:
+One flowfile attribute which is available for all flowfiles.
+'filename' : each flowfile is assigned to the filename from which it has been originated.
+If we are looking at GenerateFlowFile processor i.e. flowfile created by it,
+the filename attribute is assigned to the UUID of the flowfile .
+Look at the queue and within attributes look for 'filename'
+To demonstrate importance of this attribute, lets use a 'PutFile' processor in previous flow(example 5)
+ and create a connection from 'ReplaceText' processor.
+--Configure the connnection to have 'For relationships': success & failure.
+--Configure PutFile to have properties> Directory > directorypath
+  Settings: Automatically terminate relationships > success & failure
+--Start the PutFile processor
+Look for the filename in output directory path folder.Should have same name as attribute.
+===============================
+Example 7:
+Using functions of available expression language :
+To create and update attribute ,: UpdateAttribute
+--Add processor UpdateAttribute
+--Double click and configure UpdateAttribute >properties > + PropertyName : filename
+--update value 
+${filename}-${now():toNumber():format('dd-MM-yy')}.json
+Now establish connection between 'ReplaceText' & 'UpdateAttribute' processor
+& 'UpdateAttribute' - 'PutFile' processor.
+Now start the complete flow (right click on canvas and start)
+--Look at files generated within folder and if they have been updated as per UpdateAttribute
+============================
+
+
+
+
+
+
+
