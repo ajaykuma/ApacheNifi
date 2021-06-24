@@ -3,12 +3,14 @@ Apache Nifi: Notes
 Example 5:
 Using Expression Language:
 #Using flow created in Example 4
---To replace the content of flowfile but instead of replacing with CSV value ,let's create a JSON string as shown
+--To replace the content of flowfile but instead of replacing with CSV value ,
+  let's create a JSON string as shown
    "field1":"a"
    "field1":"b"
    "field1":"c"
    "field1":"d"
-	here the fields are assigned with the values (we extracted to the attributes prefixed with CSV)
+	
+here the fields are assigned with the values (we extracted to the attributes prefixed with CSV)
 Processors to use:
 GenerateFlowFile
 ReplaceText
@@ -16,17 +18,22 @@ ExtractText
 LogAttribute
 
 --Copy ReplaceText processor from previous flow and edit configuration
---edit replacement value to JSON string as expected
+--if we edit replacement value to JSON string ,it would be ...
    {"field1":"a"
    "field1":"b"
    "field1":"c"
    "field1":"d"}
---but instead of hardcoding values for fields, we would want to read them from previously extracted attributes.
---ie accessing value of a flowfile and assign to a processor (using expression language ie ${attribute_name)
+--but instead of hardcoding values for fields, we would want to read them from previously extracted 
+  attributes.
+--ie accessing value of a flowfile and assign to a processor 
+   (using expression language ie ${attribute_name)
+
+--so we need to use as shown below in replacement value..
    {"field1":"${csv.1}"
    "field1":"${csv.2}"
    "field1":"${csv.3}"
    "field1":"${csv.4}"}
+
 Now add this processor to existing flow
 
 GenerateFlowFile>ReplaceText>ExtractText>ReplaceText(new one)> LogAttribute
@@ -58,7 +65,7 @@ To create and update attribute ,: UpdateAttribute
 --update value 
 ${filename}-${now():toNumber():format('dd-MM-yy')}.json
 Now establish connection between 'ReplaceText' & 'UpdateAttribute' processor
-& 'UpdateAttribute' - 'PutFile' processor.
+ -> 'PutFile' processor.
 Now start the complete flow (right click on canvas and start)
 --Look at files generated within folder and if they have been updated as per UpdateAttribute
 ============================

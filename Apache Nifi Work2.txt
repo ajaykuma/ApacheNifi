@@ -1,10 +1,14 @@
 Apache Nifi: Notes
 -----------
 Example 4: Manipulating attributes and content of flowfile using available processors in Nifi
+
 --Add a GenerateFlowFile processor
---configure it to generate random data every 5 secs of size 1b 
+--configure it to generate random data every 5 secs of size 1b
+ 
 [File size: 1B, Unqiue FlowFiles : true, Run Schedule: 5 sec]
---Add a ReplaceText processor (updates the content of a flowfile by evaluating a regular expression against it,
+
+--Add a ReplaceText processor (updates the content of a flowfile by evaluating a 
+regular expression against it,
 and replaces the section of content that matches regular expression with some alternate value)
 --establish the connection between these. (Relationships: Success)
 --view and edit configuration of ReplaceText processor.
@@ -42,7 +46,8 @@ To do so, we can add a new property to processor and assign a regular expression
 --Add ExtractText
 Configure it==
 	--add a new property : properties > + csv
-	--assign its value to [(.+),(.+),(.+),(.+)] (this will extract,split and assign the values of flowfile content into 
+	--assign its value to [(.+),(.+),(.+),(.+)] (this will extract,split and 
+              assign the values of flowfile content into 
                                 a flowfile attribute 'csv']
 --connect ReplaceText with ExtractText
 --create new connection between ExtractText to LogAttribute with For Relationships: Matched
