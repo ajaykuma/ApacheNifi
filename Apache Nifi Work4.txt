@@ -1,0 +1,86 @@
+Apache Nifi: Notes
+-----------
+Example 8: Adding Process Group
+--Drag a process group to canvas and name it [say CSV to JSON]
+--now select all processors which will be added to this process group.
+--drag the processors onto the process group.
+--double click on process group to look into it to see all processors.
+--anytime ,right click and 'leave group' option allows you to come out of process group.
+
+#creating a duplicate process group
+--Right click on process group and click on copy.
+--Then paste on canvas and this creates a duplicate of processgroup.
+--Rename it to [say CSV to JSON-2]
+
+
+#communicating between process groups.
+Lets split CSV to JSON-2 into two separate process groups.
+ie output of process group 1 ---> input to process group 2
+
+Process Group-1 ("CSV to JSON-2")
+GenerateFlowFile
+ReplaceText
+ExtractText
+ReplaceText
+
+
+Process Group-2 ("Write Json to filesystem")
+UpdateAttribute
+PutFile
+LogAttribute
+
+--add a new process group and name it [Say "Write Json to filesystem"]
+--remove connection between ReplaceText and UpdateAttribute 
+--select UpdateAttribute, PutFile & LogAttribute and drag them onto new Process Group.
+--since new process group is inside old process group, its not loosely coupled.Thus let's keep both the process groups
+  parallel to each other
+--right click on new process group and select > move to the parent group
+--using input and output port create a connection between two process groups.
+--for process group 1 add a output port and create connection from ReplaceText to output.
+--for process group 2 add a input port and create connection from input to UpdateAttribute
+--now create a connection between both process groups and test your flow
+====================================
+Example 9:
+Using/creating templates:
+--select components(processors) to be as part of template
+--select template option from [operate]--give a name and description
+--we can also select process group and create a template.
+--template created is kept in local NIFI instance
+--Download templates from top right corner
+
+#Importing and using already created template
+or using other flows created : https://cwiki.apache.org/confluence/display/NIFI/Example+Dataflow+Templates
+--download Retry_Count_Loop template
+--upload template [operate menu]
+--once uploaded, we can drag and drop template from top and select the one which was recently uploaded
+========================
+Example 10: Using Funnel
+
+To connect output port to input port, they need to belong to 2 different process groups.
+Thus it can get very complicated when number of processors increase and when input-output-input flow has to be used.
+This might also lead to create multiple process groups.
+
+--Add GenerateFlowFile processors (2)
+  configure them to have RunSchedule: 10 sec
+                         File Size : 1B
+			 Unique FlowFiles : True
+--connect them to Output port [OutputNew]
+--Now add an input port on Canvas
+--Add a LogAttribute Processor and let Input connect to LogAttribute
+NOte** if we try to connect output port to input port, it won't allow unless they belong to 2 different process groups.
+
+
+#Instead: Use Funnel
+--delete the output and input ports
+--add funnel 
+--create connections from processors to funnel
+=========================
+
+
+
+
+
+
+
+
+

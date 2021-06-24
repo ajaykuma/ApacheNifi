@@ -1,0 +1,39 @@
+Example 11:
+Tailing logs > routing on content > Buffer in kafka > Deliver to HDFS
+
+--Add a processor 'TailFile'
+  Property: File to Tail : <path of log file>
+--Add 'SplitText'
+  (to split log entries into individual lines)
+  Line Split Count : 1 ( number of lines in log entry)
+--connect them (with success relationship)
+  For SplitText (failure) either we can point it to putFile/PutHDFS or even to itself)
+  Autoterminate on Original.
+--Add a processor 'RouteOnContent'
+  Configure it:
+  Match requirement: content must contain match
+  Add property : name: Info
+                 value: \bINFO\b
+                 name: Warn
+                 value: \bWARN\b
+                 name: Error
+                 value: \bERROR\b
+--Connect SplitText to RouteContent(with splits relationship)
+  (autoterminate for unmatched)
+--Add PublishKafka (to deliver data to kafka broker)
+  Configure it:
+  Kafka Brokers: sandbox.hortonworks.com:6667
+  Topic: INFO
+--make a copy of this processor and create 2 more processors for WARN n ERROR
+--Connect RouteOnContent to this with relationships respective)
+--Each PublishKafka processor goes into itself for failure to keep processing failures
+--Each PublishKafka Auto terimates on success.
+
+Now we can add
+two more processors:
+ConsumeKafka ( to get data from Kafka brokers and choose topic we want)
+PutFile/PutHDFS to push data into storage.
+------------------------------
+
+
+

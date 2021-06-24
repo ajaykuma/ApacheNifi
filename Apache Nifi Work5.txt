@@ -1,0 +1,113 @@
+Add a processor
+
+Drag the processor on canvas and look in source 
+<shows all groups , org.apache.nifi and all processors avai>
+processor 1
+GenerateFlowFile
+( we can read from any source,however we will generate some data)
+
+processor shows 
+-name
+-version
+-nifi-standard-nar(nifi archive same as jar/war i.e. collection of actual code &
+ functionalities)
+-warning icon (might show its not valid)
+
+<right click on alert sign and choose configure>
+<settings>
+Name: give a name
+Penalty Duration: if a flowfile doesnt get processed correctly,
+how long should it wait before it tries again.
+Yield Duration: How should i try and process before i yield my 
+resources to next thread.
+Bulletin level: bulletins are information or warning messages
+that can popup
+
+<scheduling>
+Scheduling strategy: timer driven/cron driven
+run schedule: set time
+concurrent tasks: assign how many concurrent tasks can run
+execution: all nodes/primary node
+
+<properties>
+Custom text: something....
+
+Add a custom attribute
+Give a name: parity
+${now():format('$$$'):mod(2)}
+
+Now lets add one more processor
+processor 2
+PutFile
+<writes the content of flowfile into a file
+on local filesystem>
+
+drag the connection from 1st processor to this one.
+<backpressure> 
+is to inform other processors sending data
+to slow down if threshold is reached.
+
+configure putfile settings
+
+processor 3
+LogAttribute
+<can be used to end flows and see what is happening>
+
+details
+
+for success
+for failure
+
+settings
+autoterminate relationships
+
+log payload: true
+------------
+now create one more flow
+processor 1
+GetFile
+
+configure
+
+mention the file name/directory name
+create directory in nodes
+
+processor 2
+RouteOnAttribute
+<we will use the property we created to decide on how processing is done>
+properties> routing strategy > route to property name
+Add a property: odd
+ ${parity:equals(1)}
+Add a property: even
+ ${parity:equals(0)}
+
+drag relationships to even n odd logattribute.
+
+processor 3
+LogAttribute
+
+<configure>
+log payload : yes
+name: log odd timestamps
+
+processor 4
+LogAttribute
+<configure>
+log payload : yes
+name: log even timestamps
+
+Add one more processor (updateAttribute) after generateFlowFile
+<settings>
++ to add property --> filename 
+${UUID()}
+--------
+start the flow from generateflowfile (do a list queue) >updateattribute
+putfile-logattribute : set back pressure
+
+After testing delete the relationship between putfile and logattribute as it was for both success and failure
+and create 2 relationships: 1 for success and 1 for failure.
+
+
+
+
+

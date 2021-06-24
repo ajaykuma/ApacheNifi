@@ -1,0 +1,25 @@
+Download Nifi registry tar
+untar and start ./nifi-registry.sh start
+
+access browser : localhost:18080
+
+check if registry shows empty
+>create a bucket (to store and register our flows in registry)
+
+Now access nifi browser > global menu > controller settings > registry clients tab +
+name: logcalregistry
+URL: localhost:18080
+
+Now we can keep our process in version control.
+
+Select process group /processor on canvas and select version control>
+give flow a name
+description and version description
+
+
+check if process group is added to registry...
+
+make changes to process group/processor
+right click > version > options (commit/show/revert) changes
+
+we can import flows in different instances .. 
