@@ -1,0 +1,129 @@
+Docker-Nifi
+-------------
+
+--(optional)Install python3 on your centos7 machine (just in case needed)
+yum update -y
+yum install -y python3
+--verify
+python3
+--set in .bashrc
+alias python=python3
+--refresh .bashrc
+source .bashrc
+========================
+--Install docker on centos7 machine
+To install Docker Engine, you need a maintained version of CentOS 7 or 8. 
+Archived versions aren’t supported or tested.
+
+The centos-extras repository must be enabled. This repository is enabled by default, 
+but if you have disabled it, you need to re-enable it.
+
+The overlay2 storage driver is recommended.
+
+Uninstall old versions
+Older versions of Docker were called docker or docker-engine. 
+If these are installed, uninstall them, along with associated dependencies.
+
+ sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+It’s OK if yum reports that none of these packages are installed.
+
+The contents of /var/lib/docker/, including images, containers, volumes, and networks, are preserved.
+ The Docker Engine package is now called docker-ce.
+
+Install using the repository
+Set up the repository
+Install the yum-utils package (which provides the yum-config-manager utility) and set up the stable repository.
+
+ sudo yum install -y yum-utils
+ sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+Install Docker Engine
+Install the latest version of Docker Engine and containerd, 
+
+ sudo yum install docker-ce docker-ce-cli containerd.io
+
+If prompted to accept the GPG key, verify that the 
+fingerprint matches 060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35, and if so, accept it.
+
+To install a specific version of Docker Engine, list the available versions in the repo, 
+then select and install:
+
+a. List and sort the versions available in your repo. This example sorts results by version number, 
+highest to lowest, and is truncated:
+
+ yum list docker-ce --showduplicates | sort -r
+The list returned depends on which repositories are enabled, and is specific to your version of 
+CentOS (indicated by the .el7 suffix in this example).
+
+b. Install a specific version by its fully qualified package name, which is the package name 
+(docker-ce) plus the version string (2nd column) starting at the first colon (:), 
+up to the first hyphen, separated by a hyphen (-). For example, docker-ce-18.09.1.
+
+ sudo yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io
+Docker is installed but not started. The docker group is created, but no users are added to 
+the group.
+
+Start Docker.
+
+ sudo systemctl start docker
+Verify that Docker Engine is installed correctly by running the hello-world image.
+
+ sudo docker run hello-world
+This command downloads a test image and runs it in a container. When the container runs, 
+it prints an informational message and exits.
+
+Docker Engine is installed and running. You need to use sudo to run Docker commands.
+
+===============
+--Running nifi container
+
+Follow instructions on https://hub.docker.com/r/apache/nifi
+
+either you can > docker pull apache/nifi 
+& then run docker container of nifi
+
+or you can >
+docker run --rm --entrypoint /bin/bash apache/nifi:1.12.0 -c 'env | grep NIFI'
+and
+docker run --rm --entrypoint /bin/bash apache/nifi:1.12.0 -c 'readlink /opt/nifi/nifi-1.12.0' 
+
+starting container
+docker run --name nifi -p 8080:8080 -d -e NIFI_WEB_HTTP_HOST=127.0.0.1 apache/nifi:1.12.0
+useful commands after running can be
+$docker images
+$docker container ls
+$docker logs nifi
+$docker stats
+$ docker exec -i -t nifi2 /bin/bash
+
+#if unable to access UI, then 
+--to get the external IP (as nifi runs in a container)
+
+$ docker inspect nifi --format='{{.NetworkSettings.Networks.bridge.Gateway}}'
+
+$required some iptables work and allowing ports
+systemctl start firewalld
+firewall-cmd --permanent --new-zone dockerc
+firewall-cmd --permanent --zone dockerc --add-source 172.17.0.0/16
+sudo firewall-cmd --permanent --zone dockerc --add-port={80,8080,18080}/tcp
+firewall-cmd --reload
+
+iptables -t filter -X
+iptables -t filter -F
+
+--try starting container again
+--if points to container running by same name
+
+$docker rm nifi
+
+--run again
+
