@@ -29,11 +29,13 @@ $source .bashrc
 $note** logged in as hdu
 # Start the ZooKeeper service
 # Note: Soon, ZooKeeper will no longer be required by Apache Kafka.
-#if running a zookeeper externally, this step is not required and kafka can connect to external zk
+
+#if running a zookeeper externally(either separate zookeeper quorum or as embedded zookeeper part of nifi)
+, this step is not required and kafka can connect to external zk
 
 $ zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
 
-#edit server.properties to point to external zk and make sure the path is also updated.
+#edit (if needed)server.properties to point to external zk and make sure the path is also updated.
 # Start the Kafka broker service
 $ kafka-server-start.sh /usr/local/kafka/config/server.properties
 

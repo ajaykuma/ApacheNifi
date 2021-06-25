@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="SCC-processors/nifi-demo-processors/src/main/java"/>
+	<classpathentry kind="src" path="SCC-processors/nifi-demo-processors/src/test/java"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-nar/target/classes/META-INF/bundled-dependencies/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-nar/target/classes/META-INF/bundled-dependencies/nifi-demo-processors-1.0.jar"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-nar/target/classes/META-INF/bundled-dependencies/nifi-processor-utils-0.1.0-incubating.jar"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-nar/target/classes/META-INF/bundled-dependencies/nifi-security-utils-0.1.0-incubating.jar"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-nar/target/classes/META-INF/bundled-dependencies/nifi-utils-0.1.0-incubating.jar"/>
+	<classpathentry kind="lib" path="SCC-processors/nifi-demo-processors/target/nifi-demo-processors-1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="SCC-processors/nifi-demo-processors/target/classes"/>
+</classpath>

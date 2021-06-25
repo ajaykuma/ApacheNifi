@@ -1,0 +1,2 @@
+These processors are used to split and merge the content present in a flowfile. Some of the processors 
+that belong to this category are SplitText, SplitJson, SplitXml, MergeContent, SplitContent, etc.

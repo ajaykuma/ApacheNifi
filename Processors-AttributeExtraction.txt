@@ -1,0 +1,3 @@
+Attribute Extraction Processors are responsible to extract, analyze, change flowfile attributes processing
+ in the NiFi data flow. Some of the processors that belong to this category are UpdateAttribute, EvaluateJSONPath,
+ ExtractText, AttributesToJSON, etc.

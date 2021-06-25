@@ -1,0 +1,4 @@
+Routing and Mediation processors are used to route the flowfiles to different processors or data flows 
+according to the information in attributes or content of those flowfiles. 
+These processors are also responsible to control the NiFi data flows. Some of the processors 
+that belong to this category are RouteOnAttribute, RouteOnContent, ControlRate, RouteText, etc

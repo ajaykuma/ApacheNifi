@@ -1,0 +1,44 @@
+PQ1: Why to avoid large clusters
+--------------
+First of all its unlikely that we would have a nifi processor which is same as mapreduce processor.
+As processor is not usually used for heavy transformations/analysis on data in NiFi.
+Nifi is for routing and moving data to right place and giving lot of metadata and tracking information.
+We want to keep nifi clusters small as each node in nifi cluster is communicating with other nodes
+very frequently & passing lot of data back and forth.
+Ex: say if you are reading from an HTTP end point ,downloading data every day, consuming data
+as its published and data is quite large say geo tagging data , or pulling image stream from
+couple of cameras and you want to merge that data ,
+& based on ip we got the video feed from, we want to find out
+-where on earth that ip is registered
+-apply longitude and latitude information
+-want to pull weather feed and add metadata into attributes and do some ml analysis and 
+find if these cameras tend to fail between some temperatures.
+Say we have 5-7 nodes cluster with primary node having processor that pulls data from stream
+,load balances that data throughout the cluster and send 1/5th data to each node, flow on each node is
+identical and exactly same.
+if we had 200 nodes, would create too much bandwidth requirement and heart beat processing.
+thus having 2 or more clusters with side by side communication between 2 coordinators 
+would be a better choice.
+
+PQ2:
+flow file repository
+(is it duplicated or all nodes or distributed in pieces)
+ FFR on a specific nodes tracks the flowfiles that have gone through that node.
+
+PQ3:Content repository used local file system or can use network attached storage or some
+other volumes.
+
+PQ4:Wait and notify processors : to send data to external system and wait for data to come back, we could 
+use wait-notify pattern
+we could also have 2 disparate flow segments
+	1.that reads from xml log files, transforms data into JSON, puts it to scipy (3 processors in flow)
+	2.decoupling two nifi flows and these flows don't talk to each other
+
+
+==============================================
+Work options:
+
+HDF DataFlow Sandbox
+Apache nifi setup on Ubuntu/centos
+HDP platform setup and Nifi as a service
+==============================

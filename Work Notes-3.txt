@@ -1,0 +1,36 @@
+Understanding NiFi max thread pools and processor concurrent task settings
+-------------
+Out of the box NiFi sets the Max Timer Thread Counts relatively low to support operating on 
+the simplest of hardware. This default setting can limit the performance of very large high 
+volume dataflow that must perform a lot of concurrent processing.
+
+General guidance for setting this value is 2 - 4 times the number of cores available to the 
+hardware on which the NiFi service is running. With a NiFi cluster where each server has 
+different hardware (not recommended), this would be set to the highest value possible based
+ on the server with the fewest cores.
+
+NOTE: Remember that all configurations you apply within the NIFi UI are applied to every node
+ in a NiFi cluster. None of the settings apply as a total to the cluster itself.
+
+NOTE: The cluster UI can be used to see how the total active threads are being used per node.
+
+Closely monitoring system CPU usage over time on each of your cluster nodes will help you
+ identify regular or routine spikes in usage. This information will help you identify if you 
+can increase the “Maximum Timer Driven Thread Count” setting even higher. Just arbitrarily setting
+ this value higher can lead to thread spending excessive time 
+in CPU wait and not really doing any work. This can show as long tasks times reported in processors.
+
+#Assigning Concurrent Tasks to processor components:
+it may appear to a user that they get better performance out of a processor by simply setting 
+a high number of concurrent tasks. What they are really doing is simply stacking up more request
+ in that large queue so the processor gets more opportunity to grab one of the available threads
+ from the resource pool. What often happens is users with a processor only running with 1 concurrent 
+task are affected (simply because of the size of the request queue). So that user increases 
+their concurrent tasks. Before you know it the request queue is so large, no one is benefiting
+ from assigning additional concurrent tasks.
+
+
+In addition you may have processors that inherently have long running tasks. Assigning these 
+processors lots of concurrent tasks can mean a substantial chunk of that thread pool is being
+ used for an extended amount of time. This then limits the number of available threads from the
+ pool that are trying to work through the remaining tasks in the queue.

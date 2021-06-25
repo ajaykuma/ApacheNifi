@@ -1,0 +1,47 @@
+PutFile
+------------
+The PutFile processor has the following settings −
+
+Name
+In the Name setting, a user can define any name for the processors either according to the project or by 
+that which makes the name more meaningful.
+
+Enable
+A user can enable or disable the processor using this setting.
+
+Penalty Duration
+This setting lets a user add the penalty time duration, in the event of flowfile failure.
+
+Yield Duration
+This setting is used to specify the yield time for processor. In this duration, the process does not get 
+scheduled again.
+
+Bulletin Level
+This setting is used to specify the log level of that processor.
+
+Automatically Terminate Relationships
+This settings has a list of check of all the available relationship of that particular process. By checking
+ the boxes, user can program processor to terminate the flowfile on that event and do not send it further in the flow.
+
+PutFile Scheduling
+These are the following scheduling options offered by the PutFile processor −
+
+Schedule Strategy
+You can schedule the process on time basis either by selecting timer driven or a specified CRON string by selecting 
+CRON driver option. There is also an Experimental strategy Event Driven, which will trigger the processor on a specific event.
+
+Concurrent Tasks
+This option is used to define the concurrent task schedule for this processor.
+
+Execution
+A user can define whether to run the processor in all nodes or only in primary node by using this option.
+
+Run Schedule
+It is used to define the time for timer driven strategy or CRON expression for CRON driven strategy.
+
+PutFile Properties
+The PutFile processor provides properties like Directory to specify the output directory for the purpose
+ of file transfer and others to manage the transfer as shown in the image below.
+
+PutFile Comments
+This Section is used to specify any information about processor.

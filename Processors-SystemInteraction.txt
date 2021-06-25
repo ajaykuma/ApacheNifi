@@ -1,0 +1,4 @@
+System Interaction processors are used to run processes or commands in any operating system.
+ These processors also run scripts in many languages to interact with a variety of systems. 
+Some of the processors that belong to this category are ExecuteScript, ExecuteProcess, ExecuteGroovyScript,
+ ExecuteStreamCommand, etc.

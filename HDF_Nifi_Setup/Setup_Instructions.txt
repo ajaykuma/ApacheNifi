@@ -12,3 +12,7 @@ in Oracle Vmbox: File> Import Appliance > add the HDF_3.1.1_virtualbox_180626 ov
 --Access sandbox via http://localhost:1080/
 --Access quicklinks > Advanced HDF
 --Access Dashboard to look at all services within HDF
+
+https://www.cloudera.com/tutorials/storm-in-trucking-iot/1.html#the-iot-use-case
+https://www.cloudera.com/tutorials/nifi-in-trucking-iot/1.html
+

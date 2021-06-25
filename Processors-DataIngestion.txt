@@ -1,0 +1,3 @@
+The processors under Data Ingestion category are used to ingest data into the NiFi data flow. 
+These are mainly the starting point of any data flow in apache NiFi. Some of the processors that belong 
+to these categories are GetFile, GetHTTP, GetFTP, GetKAFKA, etc.
