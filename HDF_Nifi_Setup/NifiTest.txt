@@ -1,0 +1,32 @@
+For sandbox work:
+
+#listing topics
+[root@sandbox-hdf ~]# /usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --list --zookeeper  sandbox-hdf.hortonworks.com:2181                                                 
+ErrorMessages
+InfoMessages
+WarnMessages
+__consumer_offsets
+test_now
+trucking_data_joined
+trucking_data_traffic
+trucking_data_truck_enriched
+
+#deleting topics (will actually not delete as per Note mentioned below)
+[root@sandbox-hdf ~]# /usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --delete --topic test_now --zookeeper  sandbox-hdf.hortonworks.com:2181                              
+Topic test_now is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+[root@sandbox-hdf ~]# /usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --delete --topic trucking_data_joined --zookeeper  sandbox-hdf.hortonworks.com:2181                  
+Topic trucking_data_joined is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+[root@sandbox-hdf ~]# /usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --delete --topic trucking_data_traffic --zookeeper  sandbox-hdf.hortonworks.com:2181                 
+Topic trucking_data_traffic is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+[root@sandbox-hdf ~]# /usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --delete --topic trucking_data_truck_enriched --zookeeper  sandbox-hdf.hortonworks.com:2181          
+Topic trucking_data_truck_enriched is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+
+#for topic creation if needed (especially if trying this example in your own setup)
+/usr/hdf/3.1.2.0-7/kafka/bin/kafka-topics.sh --create --topic trucking_data_traffic --zookeeper  sandbox-hdf.hortonworks.com:2181 --partitions 1 --replication-factor 1
+
+#to consume data from topics
+/usr/hdf/3.1.2.0-7/kafka/bin/kafka-console-consumer.sh --topic trucking_data_traffic --from-beginning --zookeeper  sandbox-hdf.hortonworks.com:2181 
