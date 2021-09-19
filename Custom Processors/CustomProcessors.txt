@@ -1,14 +1,17 @@
-Creating Custom proccessors:
+cd Creating Custom proccessors:
 -------------------
 --Test Java and mvn version on your machine from CMD prompt
 >java -version
-C:\Users\Win10\NewProcessor\SCC-processors>java -version
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors>mkdir project
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors>cd project
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project>java -version
 java version "1.8.0_221"
 Java(TM) SE Runtime Environment (build 1.8.0_221-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
   
 >mvn -version
-C:\Users\Win10\NewProcessor\SCC-processors>mvn -version
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project>mvn -version
 Apache Maven 3.6.1 (d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555; 2019-04-04T21:00:29+02:00)
 Maven home: C:\Users\Win10\Downloads\apache-maven-3.6.1-bin\apache-maven-3.6.1\bin\..
 Java version: 1.8.0_221, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk1.8.0_221\jre
@@ -20,28 +23,169 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
  JAVA_HOME=C:\Program Files\Java\jdk1.8.0_221
 ]
 
---create a directory
->mkdir NewProcessor
->cd NewProcessor
-C:\Users\Win10\NewProcessor>
->C:\Users\Win10\NewProcessor>mvn archetype:generate
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project>mkdir CustomProcessor
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project>cd CustomProcessor
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor>mvn archetype:generate
+
 --narrow down to nifi i.e. type <nifi>
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 1823: nifi
+Choose archetype:
+1: remote -> org.apache.nifi:nifi-processor-bundle-archetype (-)
+2: remote -> org.apache.nifi:nifi-service-bundle-archetype (-)
+
 --make a choice i.e. for remote archetype type <1>
---choose archetype version i.e. type <4>
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): : 1
+
+--choose archetype version i.e. type <33>
+Choose a number: 45: 33
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-processor-bundle-archetype/1.9.2/nifi-processor-bundle-archetype-1.9.2.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-processor-bundle-archetype/1.9.2/nifi-processor-bundle-archetype-1.9.2.pom (3.0 kB at 9.5 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-maven-archetypes/1.9.2/nifi-maven-archetypes-1.9.2.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-maven-archetypes/1.9.2/nifi-maven-archetypes-1.9.2.pom (1.5 kB at 6.3 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi/1.9.2/nifi-1.9.2.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi/1.9.2/nifi-1.9.2.pom (39 kB at 596 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-processor-bundle-archetype/1.9.2/nifi-processor-bundle-archetype-1.9.2.jar
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/nifi/nifi-processor-bundle-archetype/1.9.2/nifi-processor-bundle-archetype-1.9.2.jar (12 kB at 32 kB/s)
+
 --groupId: scc
 --artifactId: SCC-processors
 --version: 1.0
 --artifactBaseName: demo
 --shows package name : scc.processors.demo <enter> <Y>
+
+Define value for property 'groupId': scc
+Define value for property 'artifactId': SCC-processors
+Define value for property 'version' 1.0-SNAPSHOT: : 1.0
+Define value for property 'artifactBaseName': TestDemo
+Define value for property 'package' scc.processors.TestDemo: : <enter> <Y>
+[INFO] Using property: nifiVersion = 1.9.2
+
 --Let the build complete.
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Archetype: nifi-processor-bundle-archetype:1.9.2
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: groupId, Value: scc
+[INFO] Parameter: artifactId, Value: SCC-processors
+[INFO] Parameter: version, Value: 1.0
+[INFO] Parameter: package, Value: Y
+[INFO] Parameter: packageInPathFormat, Value: Y
+[INFO] Parameter: package, Value: Y
+[INFO] Parameter: artifactBaseName, Value: TestDemo
+[INFO] Parameter: version, Value: 1.0
+[INFO] Parameter: groupId, Value: scc
+[INFO] Parameter: artifactId, Value: SCC-processors
+[INFO] Parameter: nifiVersion, Value: 1.9.2
+[INFO] Project created from Archetype in dir: C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  06:56 min
+[INFO] Finished at: 2021-09-20T00:03:31+02:00
+[INFO] ------------------------------------------------------------------------
 
 Now looking in directories
- Directory of C:\Users\Win10\NewProcessor\SCC-processors\nifi-demo-processors\src\main\java\scc\processors\demo
+-----
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
 
-11/07/2019  04:08 AM    <DIR>          .
-11/07/2019  04:08 AM    <DIR>          ..
-11/07/2019  04:15 AM             3,710 MyProcessor.java
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor
 
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM    <DIR>          SCC-processors
+               0 File(s)              0 bytes
+               3 Dir(s)  131,405,869,056 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor>cd SCC-processors
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM    <DIR>          nifi-TestDemo-nar
+09/20/2021  12:09 AM    <DIR>          nifi-TestDemo-processors
+09/20/2021  12:09 AM             1,517 pom.xml
+               1 File(s)          1,517 bytes
+               4 Dir(s)  131,405,611,008 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors>cd nifi-TestDemo-processors
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM             2,231 pom.xml
+09/20/2021  12:09 AM    <DIR>          src
+               1 File(s)          2,231 bytes
+               3 Dir(s)  131,405,570,048 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors>cd src/main/java
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM    <DIR>          scc
+               0 File(s)              0 bytes
+               3 Dir(s)  131,405,844,480 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java>cd scc
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM    <DIR>          processors
+               0 File(s)              0 bytes
+               3 Dir(s)  131,405,910,016 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc>cd processors
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM    <DIR>          TestDemo
+               0 File(s)              0 bytes
+               3 Dir(s)  131,406,008,320 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors>cd TestDemo
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors\TestDemo>dir/p
+ Volume in drive C has no label.
+ Volume Serial Number is B2C3-C385
+
+ Directory of C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors\TestDemo
+
+09/20/2021  12:09 AM    <DIR>          .
+09/20/2021  12:09 AM    <DIR>          ..
+09/20/2021  12:09 AM             3,976 MyProcessor.java
+               1 File(s)          3,976 bytes
+               2 Dir(s)  131,406,041,088 bytes free
+
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors\src\main\java\scc\processors\TestDemo>notepad MyProcessor.java
+-----
 This code generated by maven is Nifi compliant.
 It created a class called MyProcessor,
 property for the processor "My_Property",
@@ -58,40 +202,23 @@ Add code to terminate the relationship
 	session.transfer(flowFile, MY_RELATIONSHIP);
 
 --now change to processor directory
-C:\Users\Win10\NewProcessor\SCC-processors>mvn clean install
-[INFO] Scanning for projects...
-[INFO] Inspecting build with total of 3 modules...
-[INFO] Installing Nexus Staging features:
-[INFO]   ... total of 3 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
-[INFO] ------------------------------------------------------------------------
-[INFO] Reactor Build Order:
-[INFO]
-[INFO] SCC-processors                                                     [pom]
-[INFO] nifi-demo-processors                                               [jar]
-[INFO] nifi-demo-nar                                                      [nar]
-[INFO]
-[INFO] -------------------------< scc:SCC-processors >-------------------------
-[INFO] Building SCC-processors 1.0                                        [1/3]
-[INFO] --------------------------------[ pom ]---------------------------------
-....
-....
-....
-....
-....
-[INFO] Installing C:\Users\Win10\NewProcessor\SCC-processors\nifi-demo-nar\pom.xml to C:\Users\Win10\.m2\repository\scc\nifi-demo-nar\1.0\nifi-demo-nar-1.0.pom
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors>mvn clean install
+----
+[INFO] Installing C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-nar\target\nifi-TestDemo-nar-1.0.nar to C:\Users\Win10\.m2\repository\scc\nifi-TestDemo-nar\1.0\nifi-TestDemo-nar-1.0.nar
+[INFO] Installing C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-nar\pom.xml to C:\Users\Win10\.m2\repository\scc\nifi-TestDemo-nar\1.0\nifi-TestDemo-nar-1.0.pom
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for SCC-processors 1.0:
 [INFO]
-[INFO] SCC-processors ..................................... SUCCESS [  9.091 s]
-[INFO] nifi-demo-processors ............................... SUCCESS [  4.203 s]
-[INFO] nifi-demo-nar ...................................... SUCCESS [  1.082 s]
+[INFO] SCC-processors ..................................... SUCCESS [01:06 min]
+[INFO] nifi-TestDemo-processors ........................... SUCCESS [ 20.627 s]
+[INFO] nifi-TestDemo-nar .................................. SUCCESS [  0.460 s]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  16.083 s
-[INFO] Finished at: 2019-11-07T06:33:05+01:00
+[INFO] Total time:  01:38 min
+[INFO] Finished at: 2021-09-20T00:14:50+02:00
 [INFO] ------------------------------------------------------------------------
-
+----
 copy the 
 C:\Users\Win10\NewProcessor\SCC-processors\nifi-demo-nar\target/*.nar
 
@@ -107,19 +234,32 @@ search for processor --MyProcessor
 --add logAttribute
   <autoterminate on success>
 --Test the flow
-
 ===================
+Note** We can import maven project into eclipse directly or 
+
+--Do this
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\nifi-TestDemo-processors>mvn eclipse:eclipse -DdownloadSources=true
+--then import into eclipse
+
+====================
 Creating a new Processor: FileSizeFilter
 It will accept a flowfile and accepts an attribute .
 This will find if size of received flowfile is less than attribute , then the flowfile will be passed
 to success or fail it.
 
-Look in Git for the Code
+Look into git for the code
+After code is created..
+C:\Users\Win10\Desktop\ApacheNifi\ApacheNifi\Custom Processors\project\CustomProcessor\SCC-processors\mvn clean install
 
-Test it...
-
-
-
-
-
+Work as per steps provided above to copy nar into nifi lib and restart nifi
+--Test your processor by provding a file size of some size 
+ (it should fail as default size in processor was set to 0 and thus based on check, flowfile
+  bigger than default leads to failure i.e. fail_relationship)
+=====================
+We can then 
+--GetFile (to get files)
+--use a processor that uses a filename and defines size of attribute
+  --UpdateAttribute(to use filename and define size)
+--use 'FileSizeFilter' (our UpdateAttribute) would set the default size based on a filename
+--use LogAttribute 
 
