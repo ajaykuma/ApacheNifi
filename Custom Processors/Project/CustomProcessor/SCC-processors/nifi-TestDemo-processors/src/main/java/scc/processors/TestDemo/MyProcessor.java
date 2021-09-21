@@ -96,6 +96,8 @@ public class MyProcessor extends AbstractProcessor {
         if ( flowFile == null ) {
             return;
         }
-        // TODO implement
+        System.out.println("Received a flow file");
+    	session.transfer(flowFile, MY_RELATIONSHIP);
+        
     }
 }
