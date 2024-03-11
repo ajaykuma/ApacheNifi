@@ -6,21 +6,21 @@ The follow is some examples I have accessed via CURL (if you have security,
 you will need to account for that, see the specifications).
 
 Example DevOps Calls
-curl http://localhost:8080/nifi-api/resources
+curl http://<hostname>:8080/nifi-api/resources
 
-curl http://localhost:8080/nifi-api/tenants/user-groups
+curl http://<hostname>:8080/nifi-api/tenants/user-groups
 
-curl http://localhost:8080/nifi-api/tenants/users
+curl http://<hostname>:8080/nifi-api/tenants/users
 
-curl http://localhost:8080/nifi-api/flow/about
+curl http://<hostname>:8080/nifi-api/flow/about
 
-curl http://localhost:8080/nifi-api/flow/banners
+curl http://<hostname>:8080/nifi-api/flow/banners
 
-curl http://localhost:8080/nifi-api/flow/bulletin-board
+curl http://<hostname>:8080/nifi-api/flow/bulletin-board
 
-curl http://localhost:8080/nifi-api/flow/cluster/summary
+curl http://<hostname>:8080/nifi-api/flow/cluster/summary
 
-curl http://localhost:8080/nifi-api/flow/config
+curl http://<hostname>:8080/nifi-api/flow/config
 
 {  
    "flowConfiguration":{  
@@ -35,41 +35,41 @@ curl http://localhost:8080/nifi-api/flow/config
    }
 }%
 
-curl http://localhost:8080/nifi-api/flow/controller/bulletins
+curl http://<hostname>:8080/nifi-api/flow/controller/bulletins
 
-curl http://localhost:8080/nifi-api/flow/history\?offset\=1\&count\=100
+curl http://<hostname>:8080/nifi-api/flow/history\?offset\=1\&count\=100
 
-curl http://localhost:8080/nifi-api/flow/prioritizers
+curl http://<hostname>:8080/nifi-api/flow/prioritizers
 
-curl http://localhost:8080/nifi-api/flow/processor-types
+curl http://<hostname>:8080/nifi-api/flow/processor-types
 
-curl http://localhost:8080/nifi-api/flow/registries
+curl http://<hostname>:8080/nifi-api/flow/registries
 
-curl http://localhost:8080/nifi-api/flow/reporting-tasks
+curl http://<hostname>:8080/nifi-api/flow/reporting-tasks
 
-curl http://localhost:8080/nifi-api/flow/search-results\?\q\=mxnet
+curl http://<hostname>:8080/nifi-api/flow/search-results\?\q\=mxnet
 
-curl http://localhost:8080/nifi-api/flow/status
+curl http://<hostname>:8080/nifi-api/flow/status
 
-curl http://localhost:8080/nifi-api/flow/templates
+curl http://<hostname>:8080/nifi-api/flow/templates
 
-curl http://localhost:8080/nifi-api/system-diagnostics
+curl http://<hostname>:8080/nifi-api/system-diagnostics
 
-curl http://localhost:8080/nifi-api/flow/controller/bulletins
+curl http://<hostname>:8080/nifi-api/flow/controller/bulletins
 
-curl http://localhost:8080/nifi-api/flow/status
+curl http://<hostname>:8080/nifi-api/flow/status
 
-curl http://localhost:8080/nifi-api/flow/cluster/summary
+curl http://<hostname>:8080/nifi-api/flow/cluster/summary
 
-curl http://localhost:8080/nifi-api/site-to-site
+curl http://<hostname>:8080/nifi-api/site-to-site
 
-curl http://localhost:8080/nifi-api/flow/process-groups/root
+curl http://<hostname>:8080/nifi-api/flow/process-groups/root
 
-curl http://localhost:8080/nifi-api/flow/process-groups/root/controller-services
+curl http://<hostname>:8080/nifi-api/flow/process-groups/root/controller-services
 
-curl http://localhost:8080/nifi-api/flow/process-groups/root/status
+curl http://<hostname>:8080/nifi-api/flow/process-groups/root/status
 
-curl http://localhost:8080/nifi-api/flow/process-groups/7a01d441-0164-1000-ec7a-54109819f084
+curl http://<hostname>:8080/nifi-api/flow/process-groups/7a01d441-0164-1000-ec7a-54109819f084
 
 Option 2
 Python: Now in version 0.91.
@@ -92,23 +92,23 @@ Now you an type help to see a nice list of commands. I think of this like the Sp
 
 Below are a number of non-interactive commands:
 
-./bin/cli.sh nifi pg-list -u http://localhost:8080 -ot json
+./bin/cli.sh nifi pg-list -u http://<hostname>:8080 -ot json
 
-./bin/cli.sh registry list-buckets -u http://localhost:18080
+./bin/cli.sh registry list-buckets -u http://<hostname>:18080
 
-./bin/cli.sh nifi pg-status -u http://localhost:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
+./bin/cli.sh nifi pg-status -u http://<hostname>:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
 
-./bin/cli.sh nifi pg-get-services -u http://localhost:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
+./bin/cli.sh nifi pg-get-services -u http://<hostname>:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
 
-./bin/cli.sh registry list-flows -bucketId 36cb79a4-f735-4f77-ba55-606718a9c3c9 -u http://localhost:18080
+./bin/cli.sh registry list-flows -bucketId 36cb79a4-f735-4f77-ba55-606718a9c3c9 -u http://<hostname>:18080
 
-./bin/cli.sh registry list-buckets -u http://localhost:18080/
+./bin/cli.sh registry list-buckets -u http://<hostname>:18080/
 
-./bin/cli.sh registry list-flows -u http://localhost:18080/ -bucketIdentifier 36cb79a4-f735-4f77-ba55-606718a9c3c9
+./bin/cli.sh registry list-flows -u http://<hostname>:18080/ -bucketIdentifier 36cb79a4-f735-4f77-ba55-606718a9c3c9
 
 #  Name  Id                     Description-  ------------------  ------------------------------------  -------------------------1  NiFi 1.8 Features  54b37ad8-274b-4d9d-a09c-0ee2816f271c  NiFi 1.82  Rainbow Processing  5ebc2183-954e-4887-a28c-9d0ee54a02ed  server rainbow processing
 
-./bin/cli.sh registry export-flow-version -u http://localhost:18080/ -f 5ebc2183-954e-4887-a28c-9d0ee54a02ed -o rainbow.json -ot json
+./bin/cli.sh registry export-flow-version -u http://<hostname>:18080/ -f 5ebc2183-954e-4887-a28c-9d0ee54a02ed -o rainbow.json -ot json
 
 How to Backup Registry
 You can run this from the interactive command line or as a one-off command. 
@@ -117,12 +117,12 @@ use it to get flows and then use the list of flows to get versions.
 This could easily be in a for-loop in Shell, Python, Go, or automation 
 scripting tool of your choice. I would probably do this in NiFi.
 
-registry list-buckets -u http://localhost:18080
-registry list-flows -u http://localhost:18080 -b 36cb79a4-f735-4f77-ba55-606718a9c3c9
+registry list-buckets -u http://<hostname>:18080
+registry list-flows -u http://<hostname>:18080 -b 36cb79a4-f735-4f77-ba55-606718a9c3c9
 registry export-flow-version -f 5ebc2183-954e-4887-a28c-9d0ee54a02ed -o rainbow.json -ot json
 
 List What’s Running
-nifi pg-list -u http://localhost:8080 
+nifi pg-list -u http://<hostname>:8080 
 
 You will get a list of all the Processor Groups.
 
@@ -425,7 +425,7 @@ usage: s2s
 --trustStore <arg> Truststore
 --trustStorePassword <arg> Truststore password
 --trustStoreType <arg> Truststore type (default: JKS)
--u,--url <arg> NiFI URL to connect to (default: http://localhost:8080/nifi)
+-u,--url <arg> NiFI URL to connect to (default: http://<hostname>:8080/nifi)
 
 Notify
 Send a bulletin to A Nifi Server

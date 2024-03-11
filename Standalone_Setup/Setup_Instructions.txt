@@ -1,3 +1,4 @@
+
 Apache Nifi Cluster Setup : Standalone/Single instance of Nifi
 -----------------------------------------------
 #Setup 1 node with firewall disabled (sudo ufw disable) and able to ping external world.
@@ -40,3 +41,4 @@ cat /usr/local/nifi/logs/nifi-app.log
 http://n1:8080
 
 
+--similarly we cna setup on windows.
