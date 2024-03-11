@@ -41,6 +41,11 @@ source .bashrc
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node2/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node3/conf to /usr/local/nifi/
 
+For example:
+cp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node1/conf /usr/local/nifi/
+scp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node2/conf nif@n2:/usr/local/nifi/
+scp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node3/conf nif@n3:/usr/local/nifi/
+
 #Now look into "nifi.properties" & "zookeeper.properties"
 
 #Remember to change hostnames in config files as per your own setup
