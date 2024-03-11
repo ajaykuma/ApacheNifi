@@ -41,11 +41,6 @@ source .bashrc
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node2/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node3/conf to /usr/local/nifi/
 
-For example:
-cp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node1/conf /usr/local/nifi/
-scp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node2/conf nif@n2:/usr/local/nifi/
-scp -r /home/nif/Downloads/ApacheNifi-main/Cluster_Setup/conf-Node3/conf nif@n3:/usr/local/nifi/
-
 #Now look into "nifi.properties" & "zookeeper.properties"
 
 #Remember to change hostnames in config files as per your own setup
@@ -121,6 +116,26 @@ also update login-identity-providers.xml
 </provider>
 
 then start nifi.sh in all nodes..
+
+If issues, then we need to generate 
+Generate the certificate and key for the NiFi instance. Running this command will first generate the NiFi CA 
+root certificate and private key, then generate and sign the certificate for the application instance, and finally 
+generate a pre-configured nifi.properties file
+
+nifi-toolkit-1.xx.x $ ./bin/tls-toolkit.sh standalone -n "hostname"
+The toolkit has created three files in the home or specific(say test) directory: keystore.jks, truststore.jks, and nifi.properties.
+
+IN our case:
+[hdu@ch1 ~]$ cd /usr/local/nifi-toolkit-1.23.2/
+[hdu@ch1 nifi-toolkit-1.23.2]$ bin/tls-toolkit.sh standalone -B abcd@1234 -C 'CN=nifiadmin, OU=NIFI' -n 'ch1,ch2,ch3' --nifiDnPrefix 'CN=' --nifiDnSuffix ', OU=NIFI' -o /home/hdu/test -K abcd@1234 -P abcd@1234 -S abcd@1234
+
+
+
+Optional:
+To see what was automatically populated in nifi.properties, compare it to the default file in the NiFi instance.
+diff <nifi_home>/nifi.properties <test>/nifi.properties 
+
+
 
 for nifi username and pswd
 cat /usr/local/nifi/logs/nifi-app.log | grep 'Generated Username'
