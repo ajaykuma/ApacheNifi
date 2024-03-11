@@ -1,5 +1,4 @@
-Apache Nifi: Notes
------------
+#1
 Understanding configurations
 Name:
 1st & fundamental property of processor is the 'name' property.

@@ -1,4 +1,4 @@
-Docker-Nifi
+Setting up Nifi in container : Docker
 -------------
 
 --(optional)Install python3 on your centos7 machine (just in case needed)

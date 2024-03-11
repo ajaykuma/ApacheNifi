@@ -1,4 +1,4 @@
-Nifi Logging
+Understand Nifi Logging
 ------------
 Apache NiFi uses logback library to handle its logging. There is a file logback.xml present in the conf directory of NiFi, 
 which is used to configure the logging in NiFi. The logs are generated in logs folder of NiFi and the log files are

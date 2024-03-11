@@ -1,5 +1,7 @@
 Apache Nifi Cluster Setup
 -----------------------
+Note** For newer versions , we need to add additiona security settings.
+
 For all three instances, the Cluster Common Properties can be left with the default settings. 
 Note, however, that if you change these settings, they must be set the same on every instance in the cluster.
 

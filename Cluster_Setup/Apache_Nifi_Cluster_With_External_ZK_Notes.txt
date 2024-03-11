@@ -1,3 +1,5 @@
+--download and install zookeeper on each node
+
 ZooKeeper Configuration
 "zoo.cfg" file
 
