@@ -4,15 +4,29 @@ Apache Nifi Cluster Setup with Embedded Zookeeper
 (sudo ufw disable) and able to ping external world.
 
 #Steps for all 3 nodes
+--older stable version
 #Download apache nifi 1.9.2 from https://nifi.apache.org/download.html
 #[Releases>1.9.2>Binaries>nifi-1.9.2-bin.tar.gz]
 
-#in my case the downloads are in /home/nif/Downloads
+--newer stable version
+#Download apache nifi 1.23.2 from https://nifi.apache.org/download.html
+or from archive.apache.org > nifi-1.23.2-bin.zip
+
+
+#in my case the downloads are in /home/hdu/Downloads
+
+[hdu@ch1 ~]$ ls Downloads/nifi*
+Downloads/nifi-1.23.2-bin.zip             Downloads/nifi-registry-1.23.2-bin.zip
+Downloads/nifi-1.23.2-source-release.zip  Downloads/nifi-toolkit-1.23.2-bin.zip
+
 cd /usr/local
-sudo tar -xvf /home/nif/Downloads/nifi-1.9.2-bin.tar.gz
-sudo ln -s nifi-1.9.2/ nifi
-sudo chown -R nif:nif nifi*
+#sudo tar -xvf /home/nif/Downloads/nifi-1.9.2-bin.tar.gz
+sudo unzip /home/hdu/Downloads/nifi-1.23.2-bin.zip
+#sudo ln -s nifi-1.9.2/ nifi
+sudo ln -s nifi-1.23.2 nifi
+sudo chown -R hdu:hdu nifi*
 cd
+
 #In home directory ie /home/nif update .bashrc
 vi .bashrc
 export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_221
@@ -22,7 +36,7 @@ export PATH=$PATH:$NIFI_HOME/bin
 #refresh .bashrc
 source .bashrc
 
-#Nifi config files need to be updated for cluster setup
+#Nifi config files need to be updated for cluster setup & update hostnames as per machines
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node1/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node2/conf to /usr/local/nifi/
 #copy & replace Apache_Nifi/Cluster_Setup/conf-Node3/conf to /usr/local/nifi/
@@ -34,7 +48,8 @@ source .bashrc
 #on each node
 cd /usr/local/nifi
 mkdir state
-mksir state/zookeeper
+mkdir state/zookeeper
+
 #on node1
 echo 1 > state/zookeeper/myid
 #on node2
@@ -67,4 +82,43 @@ http://n3:8080
 #if yes cluster is setup
 
 #from top right corner, from dropdown menu select cluster..
+
+**IN NEWER VERSION (1.23.x)
+--from command line
+nifi.sh set-sensitive-properties-key Summer@12winter
+--check if property was updated in nifi.properties
+
+--some other properties updated
+nifi.cluster.protocol.is.secure=true
+#nifi.web.http.host=ch1
+#nifi.web.http.port=8080
+nifi.web.https.host=ch1
+nifi.web.https.port=8443
+
+
+--also check state-management.xml ,it it has right updates of zk-provider.
+for example:
+<cluster-provider>
+        <id>zk-provider</id>
+        <class>org.apache.nifi.controller.state.providers.zookeeper.ZooKeeperStateProvider</class>
+        <property name="Connect String">ch1:2181</property>
+        <property name="Root Node">/nifi</property>
+        <property name="Session Timeout">10 seconds</property>
+        <property name="Access Control">Open</property>
+    </cluster-provider>
+
+also update login-identity-providers.xml 
+<provider>
+    <identifier>single-user-provider</identifier>
+    <class>org.apache.nifi.authentication.single.user.SingleUserLoginIdentityProvider</class>
+    <property name="Username"></property>
+    <property name="Password"></property>
+</provider>
+
+then start nifi.sh in all nodes..
+
+for nifi username and pswd
+cat /usr/local/nifi/logs/nifi-app.log | grep 'Generated Username'
+cat /usr/local/nifi/logs/nifi-app.log | grep 'Generated Password'
+
 
