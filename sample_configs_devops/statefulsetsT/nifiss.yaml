@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  name: nifiss
+  labels:
+    app: nifiss
+spec:
+  serviceName: nifiss-service-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nifiss
+  template:
+    metadata: 
+      labels:
+       app: nifiss
+    spec:
+      containers:
+        - env:
+            - name: NIFI_CLUSTER_IS_NODE
+              value: "true"
+            - name: NIFI_CLUSTER_NODE_PROTOCOL_PORT
+              value: "8082"
+            - name: NIFI_ELECTION_MAX_WAIT
+              value: 1 min
+            - name: NIFI_SENSITIVE_PROPS_KEY
+              valueFrom: 
+               secretKeyRef: 
+                name: nifi-secret
+                key: nifi_sensitive_base_key 
+            - name: NIFI_WEB_HTTP_PORT
+              value: "8080"
+            - name: NIFI_ZK_CONNECT_STRING
+              valueFrom: 
+               configMapKeyRef:
+                name: myconfigmap 
+                key: connection_string
+          image: apache/nifi:1.20.0
+          name: nifiss
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1000Mi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+      restartPolicy: Always

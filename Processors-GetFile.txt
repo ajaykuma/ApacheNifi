@@ -1,0 +1,47 @@
+GetFile:
+----------
+Following are the different settings of GetFile processor −
+
+Name
+In the Name setting, a user can define any name for the processors either according to the project or by that, 
+which makes the name more meaningful.
+
+Enable
+A user can enable or disable the processor using this setting.
+
+Penalty Duration
+This setting lets a user to add the penalty time duration, in the event of flowfile failure.
+
+Yield Duration
+This setting is used to specify the yield time for processor. 
+In this duration, the process is not scheduled again.
+
+Bulletin Level
+This setting is used to specify the log level of that processor.
+
+Automatically Terminate Relationships
+This has a list of check of all the available relationship of that particular process. By checking the boxes, 
+a user can program processor to terminate the flowfile on that event and do not send it further in the flow.
+
+GetFile Scheduling
+These are the following scheduling options offered by the GetFile processor −
+
+Schedule Strategy
+You can either schedule the process on time basis by selecting time driven or a specified CRON string by selecting 
+a CRON driver option.
+
+Concurrent Tasks
+This option is used to define the concurrent task schedule for this processor.
+
+Execution
+A user can define whether to run the processor in all nodes or only in Primary node by using this option.
+
+Run Schedule
+It is used to define the time for time driven strategy or CRON expression for CRON driven strategy.
+
+GetFile Properties
+GetFile offers multiple properties ranging compulsory properties like Input directory and file filter to optional 
+properties like Path Filter and Maximum file Size. A user can manage file fetching process using these properties.
+
+GetFile Comments
+This Section is used to specify any information about processor.

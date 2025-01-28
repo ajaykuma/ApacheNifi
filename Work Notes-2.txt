@@ -1,0 +1,59 @@
+When NiFi first starts up, the following files and directories are created:
+
+content_repository
+
+database_repository
+
+flowfile_repository
+
+provenance_repository
+
+work directory
+
+logs directory
+
+Within the conf directory, the flow.xml.gz file is created
+====================
+BackPressure:
+When you apply backpressure to that connection, it will cause the processor that is
+the source of the connection to stop being scheduled to run until the queue clears out.
+However, as you noted, data will still queue up in that processor's incoming connections.
+So to force backpressure to propagate all the way back to the source, you would
+need to configure each of the connections in the flow to have backpressure applied.
+
+The reason behind this is that we can have many different source, each routing data to
+many different destinations. So if the queue before a 'terminal processor' is filled,
+we won't want to prevent data from coming in from some source if only some portion of
+that data will go to that processor.
+
+For example, consider the following flow:
+
+A --> B --> C --> D
+                  ^
+E --> F -----|
+                  v
+                  G
+
+Where Processor A sends 100% of data to B and then C and D.
+Maybe only 1% of data from Processor E makes its way to D, though,
+and 99% of its data goes to G instead.
+
+If the queue from C to D fills up, we may not want to stop the data flowing
+in from E because most of its data is going to G. Or we may want to stop data
+coming in from E only if the queue from F to C backs up to say 100,000 FlowFiles.
+
+By ensuring that backpressure is applied only to that one connection, we can leverage
+this to control which sources stop bringing in data when.
+
+However, I can see the benefit in setting a backpressure threshold only once. And I think
+there are a couple of possible improvements here:
+
+(1) We could allow the user to select multiple connections and then configure backpressure
+
+and have that applied to all selected connections.
+
+(2) We could allow the user to set the backpressure and indicate that it should be propagated
+back
+to all upstream connections.  This feels a little more dangerous, though, because it would
+be easy
+to change configurations inadvertently.

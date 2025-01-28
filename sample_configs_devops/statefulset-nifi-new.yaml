@@ -1,0 +1,75 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nifi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nifi
+      component.opendatahub.io/name: nifi
+      opendatahub.io/component: 'true'
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nifi
+        component.opendatahub.io/name: nifi
+        opendatahub.io/component: 'true'
+    spec:
+      restartPolicy: Always
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - nifi
+                topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+      containers:
+        - resources:
+            limits:
+              cpu: '3'
+              memory: 8Gi
+            requests:
+              cpu: 100m
+              memory: 300Mi
+          env:
+            - name: NIFI_ZOOKEEPER_CONNECT_STRING
+              value: 'nifi-zookeeper:2181'
+            - name: NIFI_SENSITIVE_PROPS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nifi-secret
+                  key: NIFI_SENSITIVE_PROPS_KEY
+          volumeMounts:
+            - name: config-data
+              mountPath: /opt/nifi/nifi-current/config-data
+            - name: nifi-properties
+              mountPath: /opt/nifi/nifi-current/conf/nifi.temp
+              subPath: nifi.temp
+          image: 'apache/nifi:latest'
+          resources:
+            limits:
+              cpu: 50m
+              memory: 50Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+        - name: nifi-properties
+          configMap:
+            name: nifi-config
+            items:
+              - key: nifi.properties
+                path: nifi.temp
+            defaultMode: 420
+        
+  volumeClaimTemplates:
+    
+#  serviceName: nifi-headless

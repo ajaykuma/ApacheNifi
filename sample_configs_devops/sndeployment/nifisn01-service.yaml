@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nifisn01-service
+spec:
+  selector:
+      app: nifisn
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6980
+      targetPort: 8080
+      nodePort: 30100     

@@ -1,0 +1,4 @@
+Sending Data Processors are generally the end processor in a data flow. These processors are responsible
+ to store or send data to the destination server. After successful storing or sending the data, these 
+processors DROP the flowfile with success relationship. Some of the processors that belong to this category 
+are PutEmail, PutKafka, PutSFTP, PutFile, PutFTP, etc.

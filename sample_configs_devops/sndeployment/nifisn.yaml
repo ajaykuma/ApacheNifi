@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: nifisn2-deploy
+  labels:
+    app: nifisn2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nifisn2
+  template:
+    metadata: 
+      labels:
+       app: nifisn2
+    spec:
+      containers:
+        - env:
+            - name: NIFI_CLUSTER_IS_NODE
+              value: "false"
+            - name: NIFI_WEB_HTTP_PORT
+              value: "8080"
+            - name: NIFI_ZK_CONNECT_STRING
+              valueFrom: 
+               configMapKeyRef:
+                name: myconfigmap 
+                key: connection_string
+          image: apache/nifi:1.20.0
+          name: nifisn2
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1000Mi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+      restartPolicy: Always

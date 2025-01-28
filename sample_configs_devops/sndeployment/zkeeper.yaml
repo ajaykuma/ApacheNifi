@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata: 
+      labels:
+       app: zookeeper
+    spec:
+      containers:
+        - env:
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+          image: bitnami/zookeeper:latest
+          name: zookeeper
+          resources:
+            limits:
+              cpu: 500m
+              memory: "1073741824"
+            requests:
+              cpu: 250m
+              memory: "268435456"

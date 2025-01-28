@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: scc.processors.demo.FileSizeFilterTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.651 sec - in scc.processors.demo.FileSizeFilterTest

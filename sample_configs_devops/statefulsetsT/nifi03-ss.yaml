@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nifit3-ss
+spec:
+  selector:
+      app: nifiss
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6978
+      targetPort: 8080
+      nodePort: 30002     

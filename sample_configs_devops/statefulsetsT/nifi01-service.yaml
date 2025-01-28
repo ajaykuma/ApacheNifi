@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nifit1-service
+spec:
+  selector:
+      app: nifiss
+  type: LoadBalancer
+  selector: 
+    statefulset.kubernetes.io/pod-name: nifiss-0
+  ports:
+    - protocol: TCP
+      port: 6980
+      targetPort: 8080
+      nodePort: 30100     

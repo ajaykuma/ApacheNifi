@@ -1,0 +1,2 @@
+AWS processors are responsible to interaction with Amazon web services system. 
+Some of the processors that belong to this category are GetSQS, PutSNS, PutS3Object, FetchS3Object, etc.

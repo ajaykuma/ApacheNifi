@@ -1,0 +1,101 @@
+Nifi Logging
+------------
+Apache NiFi uses logback library to handle its logging. There is a file logback.xml present in the conf directory of NiFi, 
+which is used to configure the logging in NiFi. The logs are generated in logs folder of NiFi and the log files are
+ as described below.
+
+nifi-app.log
+This is the main log file of nifi, which logs all the activities of apache NiFi application ranging from NAR files 
+loading to the run time errors or bulletins encountered by NiFi components. Below is the default appender in logback.xml
+ file for nifi-app.log file.
+
+<appender name="APP_FILE"
+class="ch.qos.logback.core.rolling.RollingFileAppender">
+   <file>${org.apache.nifi.bootstrap.config.log.dir}/nifi-app.log</file>
+   <rollingPolicy
+      class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>
+         ${org.apache.nifi.bootstrap.config.log.dir}/
+	      nifi-app_%d{yyyy-MM-dd_HH}.%i.log
+      </fileNamePattern>
+      <maxFileSize>100MB</maxFileSize>
+      <maxHistory>30</maxHistory>
+   </rollingPolicy>
+   <immediateFlush>true</immediateFlush>
+   <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%date %level [%thread] %logger{40} %msg%n</pattern>
+   </encoder>
+</appender>
+The appender name is APP_FILE, and the class is RollingFileAppender, which means logger is using rollback policy. 
+By default, the max file size is 100 MB and can be changed to the required size. The maximum retention for APP_FILE 
+is 30 log files and can be changed as per the user requirement.
+
+nifi-user.log
+This log contains the user events like web security, web api config, user authorization, etc. Below is the appender
+ for nifi-user.log in logback.xml file.
+
+<appender name="USER_FILE"
+   class="ch.qos.logback.core.rolling.RollingFileAppender">
+   <file>${org.apache.nifi.bootstrap.config.log.dir}/nifi-user.log</file>
+   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>
+         ${org.apache.nifi.bootstrap.config.log.dir}/
+	      nifi-user_%d.log
+      </fileNamePattern>
+      <maxHistory>30</maxHistory>
+   </rollingPolicy>
+   <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%date %level [%thread] %logger{40} %msg%n</pattern>
+   </encoder>
+</appender>
+The appender name is USER_FILE. It follows the rollover policy. The maximum retention period for USER_FILE is 
+30 log files. Below is the default loggers for USER_FILE appender present in nifi-user.log.
+
+<logger name="org.apache.nifi.web.security" level="INFO" additivity="false">
+   <appender-ref ref="USER_FILE"/>
+</logger>
+<logger name="org.apache.nifi.web.api.config" level="INFO" additivity="false">
+   <appender-ref ref="USER_FILE"/>
+</logger>
+<logger name="org.apache.nifi.authorization" level="INFO" additivity="false">
+   <appender-ref ref="USER_FILE"/>
+</logger>
+<logger name="org.apache.nifi.cluster.authorization" level="INFO" additivity="false">
+   <appender-ref ref="USER_FILE"/>
+</logger>
+<logger name="org.apache.nifi.web.filter.RequestLogger" level="INFO" additivity="false">
+   <appender-ref ref="USER_FILE"/>
+</logger>
+nifi-bootstrap.log
+This log contains the bootstrap logs, apache NiFi’s standard output (all system.out written in the
+ code mainly for debugging), and standard error (all system.err written in the code). Below is the default
+ appender for the nifi-bootstrap.log in logback.log.
+
+<appender name="BOOTSTRAP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+   <file>${org.apache.nifi.bootstrap.config.log.dir}/nifi-bootstrap.log</file>
+   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>
+         ${org.apache.nifi.bootstrap.config.log.dir}/nifi-bootstrap_%d.log
+      </fileNamePattern>
+      <maxHistory>5</maxHistory>
+   </rollingPolicy>
+   <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%date %level [%thread] %logger{40} %msg%n</pattern>
+   </encoder>
+</appender>
+nifi-bootstrap.log file,s appender name is BOOTSTRAP_FILE, which also follows rollback policy. The maximum 
+retention for BOOTSTRAP_FILE appender is 5 log files. Below is the default loggers for nifi-bootstrap.log file.
+
+<logger name="org.apache.nifi.bootstrap" level="INFO" additivity="false">
+   <appender-ref ref="BOOTSTRAP_FILE" />
+</logger>
+<logger name="org.apache.nifi.bootstrap.Command" level="INFO" additivity="false">
+   <appender-ref ref="CONSOLE" />
+   <appender-ref ref="BOOTSTRAP_FILE" />
+</logger>
+<logger name="org.apache.nifi.StdOut" level="INFO" additivity="false">
+   <appender-ref ref="BOOTSTRAP_FILE" />
+</logger>
+<logger name="org.apache.nifi.StdErr" level="ERROR" additivity="false">
+   <appender-ref ref="BOOTSTRAP_FILE" />
+</logger>

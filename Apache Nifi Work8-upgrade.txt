@@ -1,0 +1,51 @@
+
+Example 12:
+-----------
+Nifi Upgrade
+Before starting the upgrade of Apache NiFi, read the release notes to know about the changes and additions. A user needs to evaluate the impact of these additions and changes in his/her current NiFi installation. Below is the link to get the release notes for the new releases of Apache NiFi.
+
+https://cwiki.apache.org/confluence/display/NIFI/Release+Notes
+
+In a cluster setup, a user needs to upgrade NiFi installation of every Node in a cluster. Follow the steps given below to upgrade the Apache NiFi.
+
+Backup all the custom NARs present in your current NiFi or lib or any other folder.
+
+Download the new version of Apache NiFi. Below is the link to download the source and binaries of latest NiFi version.
+
+https://nifi.apache.org/download.html
+
+Create a new directory in the same installation directory of current NiFi and extract the new version of Apache NiFi.
+
+Stop the NiFi gracefully. First stop all the processors and let all the flowfiles present in the flow get processed. Once, no more flowfile is there, stop the NiFi.
+
+Copy the configuration of authorizers.xml from current NiFi installation to the new version.
+
+Update the values in bootstrap-notification-services.xml, and bootstrap.conf of new NiFi version from the current one.
+
+Add the custom logging from logback.xml to the new NiFi installation.
+
+Configure the login identity provider in login-identity-providers.xml from the current version.
+
+Update all the properties in nifi.properties of the new NiFi installation from current version.
+
+Please make sure that the group and user of new version is same as the current version, to avoid any permission denied errors.
+
+Copy the configuration from state-management.xml of current version to the new version.
+
+Copy the contents of the following directories from current version of NiFi installation to the same directories in the new version.
+
+./conf/flow.xml.gz
+
+Also flow.xml.gz from the archive directory.
+
+For provenance and content repositories change the values in nifi. properties file to the current repositories.
+
+copy state from ./state/local or change in nifi.properties if any other external directory is specified.
+
+Recheck all the changes performed and check if they have an impact on any new changes added in the new NiFi version. If there is any impact, check for the solutions.
+
+Start all the NiFi nodes and verify if all the flows are working correctly and repositories are storing data and Ui is retrieving it with any errors.
+
+Monitor bulletins for some time to check for any new errors.
+
+If the new version is working correctly, then the current version can be archived and deleted from the directories.

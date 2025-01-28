@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nifisn-service-headless
+spec:
+  clusterIP: None
+  selector:
+      app: nifisn
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

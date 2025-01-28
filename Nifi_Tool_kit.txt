@@ -1,0 +1,435 @@
+Option 1: REST
+The full documentation for the NiFi REST API is here. You can try them out, 
+our see some of those calls below.
+
+The follow is some examples I have accessed via CURL (if you have security, 
+you will need to account for that, see the specifications).
+
+Example DevOps Calls
+curl http://localhost:8080/nifi-api/resources
+
+curl http://localhost:8080/nifi-api/tenants/user-groups
+
+curl http://localhost:8080/nifi-api/tenants/users
+
+curl http://localhost:8080/nifi-api/flow/about
+
+curl http://localhost:8080/nifi-api/flow/banners
+
+curl http://localhost:8080/nifi-api/flow/bulletin-board
+
+curl http://localhost:8080/nifi-api/flow/cluster/summary
+
+curl http://localhost:8080/nifi-api/flow/config
+
+{  
+   "flowConfiguration":{  
+      "supportsManagedAuthorizer":false,
+      "supportsConfigurableAuthorizer":false,
+      "supportsConfigurableUsersAndGroups":false,
+      "autoRefreshIntervalSeconds":30,
+      "currentTime":"16:12:51 EDT",
+      "timeOffset":-14400000,
+      "defaultBackPressureObjectThreshold":10000,
+      "defaultBackPressureDataSizeThreshold":"1 GB"
+   }
+}%
+
+curl http://localhost:8080/nifi-api/flow/controller/bulletins
+
+curl http://localhost:8080/nifi-api/flow/history\?offset\=1\&count\=100
+
+curl http://localhost:8080/nifi-api/flow/prioritizers
+
+curl http://localhost:8080/nifi-api/flow/processor-types
+
+curl http://localhost:8080/nifi-api/flow/registries
+
+curl http://localhost:8080/nifi-api/flow/reporting-tasks
+
+curl http://localhost:8080/nifi-api/flow/search-results\?\q\=mxnet
+
+curl http://localhost:8080/nifi-api/flow/status
+
+curl http://localhost:8080/nifi-api/flow/templates
+
+curl http://localhost:8080/nifi-api/system-diagnostics
+
+curl http://localhost:8080/nifi-api/flow/controller/bulletins
+
+curl http://localhost:8080/nifi-api/flow/status
+
+curl http://localhost:8080/nifi-api/flow/cluster/summary
+
+curl http://localhost:8080/nifi-api/site-to-site
+
+curl http://localhost:8080/nifi-api/flow/process-groups/root
+
+curl http://localhost:8080/nifi-api/flow/process-groups/root/controller-services
+
+curl http://localhost:8080/nifi-api/flow/process-groups/root/status
+
+curl http://localhost:8080/nifi-api/flow/process-groups/7a01d441-0164-1000-ec7a-54109819f084
+
+Option 2
+Python: Now in version 0.91.
+
+This library is awesome, See here for a deep dive.
+https://community.cloudera.com/t5/Community-Articles/Big-Data-DevOps-Apache-NiFi-Flow-Versioning-and-Automation/ta-p/247976
+
+Option 3
+Forget about it, just use Ambari, NiFi, Cloudbreak,and DPS. 
+
+Option 4: The New NiFi Toolkit CLI
+Let's examine the New NiFi CLI.
+
+To install the CLI, you need to download Apache NiFi Toolkit.
+
+Once you unzip it, you can run one of two ways. With no parameters and you will bring up an
+ interactive console.
+
+Now you an type help to see a nice list of commands. I think of this like the Spark Shell or Apache Zeppelin where you can experiment, find out what you want then you can use that single command with your automation suite. The toolkit lets you automate a number of actions in Apache NiFi and it's registry.
+
+Below are a number of non-interactive commands:
+
+./bin/cli.sh nifi pg-list -u http://localhost:8080 -ot json
+
+./bin/cli.sh registry list-buckets -u http://localhost:18080
+
+./bin/cli.sh nifi pg-status -u http://localhost:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
+
+./bin/cli.sh nifi pg-get-services -u http://localhost:8080 --processGroupId f10700ba-3d5e-30a8-ea5d-33c59771d4f1
+
+./bin/cli.sh registry list-flows -bucketId 36cb79a4-f735-4f77-ba55-606718a9c3c9 -u http://localhost:18080
+
+./bin/cli.sh registry list-buckets -u http://localhost:18080/
+
+./bin/cli.sh registry list-flows -u http://localhost:18080/ -bucketIdentifier 36cb79a4-f735-4f77-ba55-606718a9c3c9
+
+#  Name  Id                     Description-  ------------------  ------------------------------------  -------------------------1  NiFi 1.8 Features  54b37ad8-274b-4d9d-a09c-0ee2816f271c  NiFi 1.82  Rainbow Processing  5ebc2183-954e-4887-a28c-9d0ee54a02ed  server rainbow processing
+
+./bin/cli.sh registry export-flow-version -u http://localhost:18080/ -f 5ebc2183-954e-4887-a28c-9d0ee54a02ed -o rainbow.json -ot json
+
+How to Backup Registry
+You can run this from the interactive command line or as a one-off command. 
+You would have to capture the list of buckets from the list, 
+use it to get flows and then use the list of flows to get versions. 
+This could easily be in a for-loop in Shell, Python, Go, or automation 
+scripting tool of your choice. I would probably do this in NiFi.
+
+registry list-buckets -u http://localhost:18080
+registry list-flows -u http://localhost:18080 -b 36cb79a4-f735-4f77-ba55-606718a9c3c9
+registry export-flow-version -f 5ebc2183-954e-4887-a28c-9d0ee54a02ed -o rainbow.json -ot json
+
+List What’s Running
+nifi pg-list -u http://localhost:8080 
+
+You will get a list of all the Processor Groups.
+
+An Example Processor Group List From HDF NiFi Server in the Cloud
+
+
+List of Commands
+commands:
+demo quick-import
+nifi current-user
+nifi get-root-id
+nifi list-reg-clients
+nifi create-reg-client
+nifi update-reg-client
+nifi get-reg-client-id
+nifi pg-import
+nifi pg-start
+nifi pg-stop
+nifi pg-get-vars
+nifi pg-set-var
+nifi pg-get-version
+nifi pg-change-version
+nifi pg-get-all-versions
+nifi pg-list
+nifi pg-status
+nifi pg-get-services
+nifi pg-enable-services
+nifi pg-disable-services
+registry current-user
+registry list-buckets
+registry create-bucket
+registry delete-bucket
+registry list-flows
+registry create-flow
+registry delete-flow
+registry list-flow-versions
+registry export-flow-version
+registry import-flow-version
+registry sync-flow-versions
+registry transfer-flow-version
+session keys
+session show
+session get
+session set
+session remove
+session clear
+exit
+help
+======================================================
+Transfer Between Servers (NiFi Registries)
+registry transfer-flow-version
+Transfers a version of a flow directly from one flow to another, without needing
+to export/import. If --sourceProps is not specified, the source flow is assumed
+to be in the same registry as the destination flow. If --sourceFlowVersion is
+not specified, then the latest version will be transferred.
+usage: transfer-flow-version
+ -f,--flowIdentifier <arg>          A flow identifier
+ -h,--help                          Help
+ -kp,--keyPasswd <arg>              The key password of the keystore being used
+ -ks,--keystore <arg>               A keystore to use for TLS/SSL connections
+ -ksp,--keystorePasswd <arg>        The password of the keystore being used
+ -kst,--keystoreType <arg>          The type of key store being used (JKS or
+                                    PKCS12)
+ -ot,--outputType <arg>             The type of output to produce (json or
+                                    simple)
+ -p,--properties <arg>              A properties file to load arguments from,
+                                    command line values will override anything
+                                    in the properties file, must contain full
+                                    path to file
+ -pe,--proxiedEntity <arg>          The identity of an entity to proxy
+ -sf,--sourceFlowIdentifier <arg>   A flow identifier from the source registry
+ -sfv,--sourceFlowVersion <arg>     A version of a flow from the source registry
+ -sp,--sourceProps <arg>            A properties file to load for the source
+ -ts,--truststore <arg>             A truststore to use for TLS/SSL connections
+ -tsp,--truststorePasswd <arg>      The password of the truststore being used
+ -tst,--truststoreType <arg>        The type of trust store being used (JKS or
+                                    PKCS12)
+ -u,--baseUrl <arg>                 The URL to execute the command against
+ -verbose,--verbose                 Indicates that verbose output should be
+                                    provided
+An Example List of My Local Apache NiFi Flows
+
+========================================================
+NIFI TOOLKIT Flow Analyzer
+bin/flow-analyzer.sh 
+
+To run this with my massive amount of flows, I edited the flow-analyze.sh and upped 
+java memory to below:
+
+${JAVA_OPTS:--Xms2G -Xmx2G} 
+
+➜ nifi-toolkit-1.8.0 bin/flow-analyzer.sh
+mng@um1:~$ flow-analyzer.sh /usr/local/nifi/conf/flow.xml.gz 
+Using flow=/usr/local/nifi/conf/flow.xml.gz
+Total Bytes Utilized by System=13 GB
+Max Back Pressure Size=1 GB
+Min Back Pressure Size=1 GB
+Average Back Pressure Size=1 GB
+Max Flowfile Queue Size=10000
+Min Flowfile Queue Size=10000
+Avg Flowfile Queue Size=10000.000000000
+==============================================
+bin/file-manager.sh
+
+usage: org.apache.nifi.toolkit.admin.filemanager.FileManagerTool [-b <arg>] [-c <arg>] [-d <arg>] [-h] [-i <arg>] [-m] [-o <arg>] [-r <arg>] [-t <arg>] [-v] [-x]
+
+This tool is used to perform backup, install and restore activities for a NiFi node.
+
+-b,--backupDir <arg> Backup NiFi Directory (used with backup or restore operation)
+
+-c,--nifiCurrentDir <arg> Current NiFi Installation Directory (used optionally with install or restore operation)
+
+-d,--nifiInstallDir <arg> NiFi Installation Directory (used with install or restore operation)
+
+-h,--help Print help info (optional)
+
+-i,--installFile <arg> NiFi Install File
+
+-m,--moveRepositories Allow repositories to be moved to new/restored nifi directory from existing installation, if available (used optionally with install or restore operation)
+
+-o,--operation <arg> File operation (install | backup | restore)
+
+-r,--nifiRollbackDir <arg> NiFi Installation Directory (used with install or restore operation)
+
+-t,--bootstrapConf <arg> Current NiFi Bootstrap Configuration File (optional)
+
+-v,--verbose Set mode to verbose (optional, default is false)
+
+-x,--overwriteConfigs Overwrite existing configuration directory with upgrade changes (used optionally with install or restore operation)
+
+Java home: /Library/Java/Home
+
+NiFi Toolkit home: /Volumes/seagate/apps/nifi-toolkit-1.8.0
+
+Backups
+----------------------
+# backup NiFi installation
+# option -t may be provided to ensure backup of external boostrap.conf file
+
+mng@um1:~$ file-manager.sh -o backup -b /tmp/nifibckup -c /usr/local/nifi -v -t /usr/local/nifi/conf/bootstrap.conf 
+2019/11/06 04:41:26 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Creating backup in directory /tmp/nifibckup. Please note that repositories are not included in backup operation.
+2019/11/06 04:41:28 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Backup Complete
+mng@um1:~$ ls /tmp/nifibckup/
+bin  bootstrap_files  conf  docs  lib  LICENSE  NOTICE  README
+mng@um1:~$ ls /tmp/nifibckup/bootstrap_files/
+bootstrap  bootstrap.conf
+mng@um1:~$ ls -all /tmp/nifibckup/bootstrap_files/
+total 16
+drwx------ 3 mng mng 4096 Nov  6 04:41 .
+drwx------ 7 mng mng 4096 Nov  6 04:41 ..
+drwx------ 2 mng mng 4096 Nov  5 19:30 bootstrap
+-rw------- 1 mng mng 3509 Nov  5 19:56 bootstrap.conf
+mng@um1:~$ ls -all /tmp/nifibckup/bootstrap_files/bootstrap
+total 14048
+drwx------ 2 mng mng    4096 Nov  5 19:30 .
+drwx------ 3 mng mng    4096 Nov  6 04:41 ..
+-rw------- 1 mng mng   30035 Aug 23  2017 accessors-smart-1.2.jar
+-rw------- 1 mng mng   62983 Aug 29  2016 activation-1.1.jar
+-rw------- 1 mng mng  167761 Aug 29  2016 antlr-runtime-3.5.2.jar
+-rw------- 1 mng mng   53297 Mai  9  2017 asm-5.0.4.jar
+-rw------- 1 mng mng  796532 Okt  4  2018 bcpkix-jdk15on-1.60.jar
+-rw------- 1 mng mng 4189874 Okt  4  2018 bcprov-jdk15on-1.60.jar
+-rw------- 1 mng mng  335042 Dez  7  2017 commons-codec-1.11.jar
+-rw------- 1 mng mng  501879 Okt  4  2018 commons-lang3-3.8.1.jar
+-rw------- 1 mng mng  183760 Okt  4  2018 commons-text-1.4.jar
+-rw------- 1 mng mng   66519 Sep 14  2017 jackson-annotations-2.9.0.jar
+-rw------- 1 mng mng  324036 Okt  4  2018 jackson-core-2.9.7.jar
+-rw------- 1 mng mng 1350857 Okt  4  2018 jackson-databind-2.9.7.jar
+-rw------- 1 mng mng   17570 Aug 29  2016 jBCrypt-0.4.1.jar
+-rw------- 1 mng mng 1091208 Apr 30  2017 jna-4.4.0.jar
+-rw------- 1 mng mng 2281814 Apr 30  2017 jna-platform-4.4.0.jar
+-rw------- 1 mng mng  223186 Nov  1  2017 json-path-2.4.0.jar
+-rw------- 1 mng mng  120316 Aug 23  2017 json-smart-2.3.jar
+-rw------- 1 mng mng  290339 Apr 30  2017 logback-classic-1.2.3.jar
+-rw------- 1 mng mng  471901 Apr 30  2017 logback-core-1.2.3.jar
+-rw------- 1 mng mng  521157 Aug 29  2016 mail-1.4.7.jar
+-rw------- 1 mng mng  133776 Okt 23  2018 nifi-api-1.8.0.jar
+-rw------- 1 mng mng   80762 Okt 23  2018 nifi-bootstrap-1.8.0.jar
+-rw------- 1 mng mng  261594 Okt 23  2018 nifi-expression-language-1.8.0.jar
+-rw------- 1 mng mng   28143 Okt 23  2018 nifi-properties-loader-1.8.0.jar
+-rw------- 1 mng mng  104650 Okt 23  2018 nifi-security-utils-1.8.0.jar
+-rw------- 1 mng mng  154615 Okt 23  2018 nifi-utils-1.8.0.jar
+-rw------- 1 mng mng  352320 Apr 30  2017 okhttp-3.6.0.jar
+-rw------- 1 mng mng   79429 Apr 30  2017 okio-1.11.0.jar
+-rw------- 1 mng mng   41203 Apr 30  2017 slf4j-api-1.7.25.jar
+mng@um1:~$ ls -all /tmp/nifibckup/conf
+total 96
+drwx------ 3 mng mng  4096 Nov  6 03:49 .
+drwx------ 7 mng mng  4096 Nov  6 04:41 ..
+drwx------ 2 mng mng  4096 Nov  6 03:49 archive
+-rw------- 1 mng mng 20419 Nov  5 19:56 authorizers.xml
+-rw------- 1 mng mng  3509 Nov  5 19:56 bootstrap.conf
+-rw------- 1 mng mng  2326 Nov  5 19:56 bootstrap-notification-services.xml
+-rw------- 1 mng mng  6178 Nov  6 03:49 flow.xml.gz
+-rw------- 1 mng mng  8313 Nov  5 19:56 logback.xml
+-rw------- 1 mng mng  6449 Nov  5 19:56 login-identity-providers.xml
+-rw------- 1 mng mng 11255 Nov  5 19:57 nifi.properties
+-rw------- 1 mng mng  8678 Nov  5 19:56 state-management.xml
+-rw------- 1 mng mng  1497 Nov  5 19:56 zookeeper.properties
+*********
+# install NiFi using compressed tar file into /usr/nifiNew directory (should install as /usr/nifi/nifi-1.x.x).
+# migrate existing configurations with location determined by external bootstrap.conf and move over repositories from /tmp/nifibckup/
+# options -t and -c should both be provided if migration of configurations, state and repositories are required
+
+
+mng@um1:~$ sudo mkdir /usr/local/nifiNew
+[sudo] password for mng: 
+mng@um1:~$ sudo chown -R mng:mng /usr/local/nifiNew
+
+mng@um1:~$ file-manager.sh -o install -i /home/mng/Downloads/nifi-1.8.0-bin.tar.gz -d /usr/local/nifiNew -c /tmp/nifibckup/ -t /tmp/nifibckup/bootstrap_files/bootstrap.conf 
+
+mng@um1:/usr/local$ cd nifiNew/
+mng@um1:/usr/local/nifiNew$ ls
+nifi-1.8.0
+mng@um1:/usr/local/nifiNew$ cd nifi-1.8.0/
+mng@um1:/usr/local/nifiNew/nifi-1.8.0$ ls
+bin  conf  docs  lib  LICENSE  NOTICE  README
+mng@um1:/usr/local/nifiNew/nifi-1.8.0$ ls conf/
+archive          bootstrap.conf                       flow.xml.gz  login-identity-providers.xml  state-management.xml
+authorizers.xml  bootstrap-notification-services.xml  logback.xml  nifi.properties               zookeeper.properties
+mng@um1:/usr/local/nifiNew/nifi-1.8.0$ cd conf/
+mng@um1:/usr/local/nifiNew/nifi-1.8.0/conf$ vi nifi.properties 
+
+# restore NiFi installation from backup directory and move back repositories
+# option -t may be provided to ensure bootstrap.conf is restored to the file path provided, otherwise it is placed in the
+# default directory under the rollback path (e.g. /tmp/nifibckup/) 
+mng@um1:~$ file-manager.sh -o restore -b /tmp/nifibckup/ -r /usr/local/nifi -c /usr/local/nifiNew/nifi-1.8.0 -m -v 
+2019/11/06 05:22:52 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Restoring to directory:/usr/local/nifi
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Moving repositories from /usr/local/nifiNew/nifi-1.8.0 to /usr/local/nifi. Please note that repositories may be upgraded during install and become incompatible with a previous version. 
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Moving flowfile repo
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Moving content repo
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Moving provenance repo
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Moving database repo
+2019/11/06 05:22:56 INFO [main] org.apache.nifi.toolkit.admin.filemanager.FileManagerTool: Restore Completed.
+============================================
+==========================================================
+➜ nifi-toolkit-1.8.0 bin/notify.sh
+
+usage: org.apache.nifi.toolkit.admin.notify.NotificationTool [-b <arg>] [-d <arg>] [-h] [-l <arg>] [-m <arg>] [-p <arg>] [-v]
+
+This tool is used to send notifications (bulletins) to a NiFi cluster.
+
+-b,--bootstrapConf <arg> Existing Bootstrap Configuration file
+
+-d,--nifiInstallDir <arg> NiFi Installation Directory
+
+-h,--help Print help info
+
+-l,--level <arg> Level for notification bulletin INFO,WARN,ERROR
+
+-m,--message <arg> Notification message for nifi instance or cluster
+
+-p,--proxyDn <arg> User or Proxy DN that has permission to send a notification. User must have view and modify privileges to 'access the controller' in NiFi:
+
+-v,--verbose Set mode to verbose (default is false)
+
+Java home: /Library/Java/Home
+NiFi Toolkit home: /Volumes/seagate/apps/nifi-toolkit-1.8.0
+nifi-toolkit-1.8.0 bin/s2s.sh
+Must specify either Port Name or Port Identifier to build Site-to-Site client
+
+s2s is a command line tool that can either read a list of DataPackets from stdin to send over site-to-site or write the received DataPackets to stdout
+
+The s2s cli input/output format is a JSON list of DataPackets. They can have the following formats:
+
+ [{"attributes":{"key":"value"},"data":"aGVsbG8gbmlmaQ=="}] 
+
+Where data is the base64 encoded value of the FlowFile content (always used for received data) or
+
+ [{"attributes":{"key":"value"},"dataFile":"/Volumes/seagate/apps/nifi-toolkit-
+
+1.8.0/EXAMPLE"}] 
+
+Where dataFile is a file to read the FlowFile content from
+
+Example usage to send a FlowFile with the contents of "hey nifi" to a local unsecured NiFi over http with an input port named input:
+
+echo '[{"data":"aGV5IG5pZmk="}]' | bin/s2s.sh -n input -p http
+usage: s2s
+--batchCount <arg> Number of flow files in a batch
+--batchDuration <arg> Duration of a batch
+--batchSize <arg> Size of flow files in a batch
+-c,--compression Use compression
+-d,--direction <arg> Direction (valid directions: SEND, RECEIVE) (default: SEND)
+-h,--help Show help message and exit
+-i,--portIdentifier <arg> Port id
+--keyStore <arg> Keystore
+--keyStorePassword <arg> Keystore password
+--keyStoreType <arg> Keystore type (default: JKS)
+-n,--portName <arg> Port name
+--needClientAuth Need client auth
+-p,--transportProtocol <arg> Site to site transport protocol (default: RAW)
+--peerPersistenceFile <arg> File to write peer information to so it can be recovered on restart
+--penalization <arg> Penalization period
+--proxyHost <arg> Proxy hostname
+--proxyPassword <arg> Proxy password
+--proxyPort <arg> Proxy port
+--proxyUsername <arg> Proxy username
+--timeout <arg> Timeout
+--trustStore <arg> Truststore
+--trustStorePassword <arg> Truststore password
+--trustStoreType <arg> Truststore type (default: JKS)
+-u,--url <arg> NiFI URL to connect to (default: http://localhost:8080/nifi)
+
+Notify
+Send a bulletin to A Nifi Server
+
+https://docs.hortonworks.com/HDPDocuments/HDF3/HDF-3.1.2/bk_administration/content/notify.html
+
+notify.sh

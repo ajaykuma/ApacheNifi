@@ -1,0 +1,4 @@
+The processors of this Database Access category are capable of selecting or inserting data or executing 
+and preparing other SQL statements from database. These processors mainly use data connection pool controller 
+setting of Apache NiFi. Some of the processors that belong to this category are ExecuteSQL, PutSQL, PutDatabaseRecord,
+ ListDatabaseTables, etc.

@@ -1,0 +1,4 @@
+Processors that belong to Data Transformation are capable of altering content of the flowfiles.
+ These can be used to fully replace the data of a flowfile normally used when a user has to send flowfile
+ as an HTTP body to invokeHTTP processor. Some of the processors that belong to this category are ReplaceText,
+ JoltTransformJSON, etc.
